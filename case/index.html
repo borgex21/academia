@@ -240,21 +240,21 @@ mark{background:rgba(182,146,85,.28);color:inherit;border-radius:3px;padding:0 2
 /* ============ DADOS OPERACIONAIS (fonte: POP Recepção + Matriz de Ativações + Cronograma) ============ */
 
 const POPS = [
-  {id:"abertura", title:"Abertura do Salão", group:"Rotina", steps:[
+  {id:"abertura", title:"Abertura do Salão", group:"Rotina", setor:"Recepção", steps:[
     "Conferir entrada, área de espera, balcão, vitrine de produtos e materiais de atendimento.",
     "Conferir funcionamento de telefone, internet, som, ar-condicionado, máquinas de cartão e impressora de nota fiscal.",
     "Conferir cartão de visita, bobinas, sacolas, materiais de recepção e itens de apoio.",
     "Conferir agenda geral do dia: erros, sobreposições, falta de profissional, encaixes sem validação, horários sensíveis.",
     "Checar lista da vez do dia anterior e validar pendências antes de iniciar novos atendimentos.",
     "Informar imediatamente a gerência sobre qualquer item que interfira na operação."]},
-  {id:"apresentacao", title:"Apresentação Pessoal", group:"Rotina", steps:[
+  {id:"apresentacao", title:"Apresentação Pessoal", group:"Rotina", setor:"Recepção", steps:[
     "Manter cabelo arrumado desde o início do expediente, com acabamento profissional.",
     "Usar uniforme completo, limpo, alinhado e sem sinais de desgaste.",
     "Manter maquiagem pronta, batom neutro ou suave, sobrancelhas cuidadas.",
     "Manter unhas feitas, limpas e com cores neutras ou suaves.",
     "Usar apenas acessórios discretos e simples.",
     "Corrigir imediatamente qualquer ponto de imagem que reduza a percepção de padrão."]},
-  {id:"agendamento", title:"Agendamento", group:"Agenda", steps:[
+  {id:"agendamento", title:"Agendamento", group:"Agenda", setor:"Recepção", steps:[
     "Solicitar nome completo e telefone da cliente para localizar ou confirmar cadastro.",
     "Perguntar qual serviço deseja realizar e se possui profissional de preferência.",
     "Conferir histórico da cliente: profissional recorrente, preferências e restrições.",
@@ -263,13 +263,13 @@ const POPS = [
     "Em caso de encaixe, validar com o profissional e garantir que não comprometa outra cliente.",
     "Confirmar data, horário, serviço, profissional e unidade antes de finalizar.",
     "Registrar origem da preferência quando cliente nova pedir profissional específico."]},
-  {id:"cadastro", title:"Cadastro de Cliente", group:"Agenda", steps:[
+  {id:"cadastro", title:"Cadastro de Cliente", group:"Agenda", setor:"Recepção", steps:[
     "Solicitar nome completo, telefone, data de aniversário e informações essenciais com gentileza.",
     "Perguntar se deseja informar e-mail e CPF para emissão de nota fiscal.",
     "Registrar origem da cliente: indicação, tráfego pago, Instagram, profissional, retorno espontâneo ou parceria.",
     "Atualizar dados sempre que houver divergência ou informação incompleta.",
     "Agradecer e confirmar que o cadastro foi concluído."]},
-  {id:"telefone", title:"Atendimento Telefônico e WhatsApp", group:"Agenda", steps:[
+  {id:"telefone", title:"Atendimento Telefônico e WhatsApp", group:"Agenda", setor:"Recepção", steps:[
     "Atender ou responder com saudação, nome do Sala D'Oro e identificação pessoal.",
     "Entender a necessidade da cliente antes de oferecer horário.",
     "Conferir ou criar cadastro conforme necessidade.",
@@ -278,14 +278,14 @@ const POPS = [
     "Oferecer serviço adicional coerente com a necessidade da cliente.",
     "Encerrar confirmando as informações e agradecendo o contato.",
     "Retomar conversas em aberto conforme regra de follow-up D0, D1, D3, D5 e D7."]},
-  {id:"primeirocontato", title:"Primeiro Contato no Salão", group:"Experiência", steps:[
+  {id:"primeirocontato", title:"Primeiro Contato no Salão", group:"Experiência", setor:"Recepção", steps:[
     "Receber a cliente com sorriso, postura e cumprimento adequado ao turno.",
     "Se apresentar e chamar a cliente pelo nome quando possível.",
     "Confirmar atendimento, profissional e horário.",
     "Oferecer água, café, chá e senha do Wi-Fi.",
     "Acomodar e acompanhar até o profissional ou sala correta.",
     "Zelar pela cliente entre atendimentos, principalmente em espera, troca de serviço ou deslocamento interno."]},
-  {id:"listadavez", title:"Lista da Vez", group:"Agenda", steps:[
+  {id:"listadavez", title:"Lista da Vez", group:"Agenda", setor:"Recepção", steps:[
     "Identificar o serviço solicitado e consultar a lista correspondente.",
     "Identificar o profissional da vez e verificar disponibilidade real.",
     "Confirmar possibilidade de atendimento com o profissional quando houver encaixe.",
@@ -294,7 +294,7 @@ const POPS = [
     "Registrar nome da cliente, serviço, profissional, data, horário e responsável.",
     "Agendamento antecipado: marcar provisoriamente e confirmar após a presença da cliente.",
     "Corrigir a lista em caso de falta, cancelamento ou remarcação conforme orientação da gerência."]},
-  {id:"espera", title:"Cliente em Espera", group:"Experiência", steps:[
+  {id:"espera", title:"Cliente em Espera", group:"Experiência", setor:"Recepção", steps:[
     "Informar o motivo da espera com transparência e pedir desculpas pelo desconforto.",
     "Informar tempo estimado e perguntar se a cliente consegue aguardar.",
     "Oferecer água, café, chá, Wi-Fi e acomodação adequada.",
@@ -302,21 +302,21 @@ const POPS = [
     "Cronometrar o tempo informado e reposicionar a cliente antes do limite combinado.",
     "Se a espera aumentar, explicar novamente, pedir desculpas e oferecer alternativa.",
     "Acionar a gerência se a espera comprometer a experiência."]},
-  {id:"revenda", title:"Revenda de Produtos", group:"Comercial", steps:[
+  {id:"revenda", title:"Revenda de Produtos", group:"Comercial", setor:"Recepção", steps:[
     "Perguntar se algum produto foi indicado pelo profissional.",
     "Sem indicação, entender a necessidade da cliente antes de sugerir.",
     "Apresentar produto adequado, modo de uso, benefício e complementar quando pertinente.",
     "Permitir que a cliente veja, toque ou conheça a textura do produto.",
     "Confirmar se pode entrar em contato depois para acompanhar resultado.",
     "Embalar com cuidado, cobrar, emitir nota quando solicitado e agradecer."]},
-  {id:"interno", title:"Atendimento Interno da Equipe", group:"Rotina", steps:[
+  {id:"interno", title:"Atendimento Interno da Equipe", group:"Rotina", setor:"Recepção", steps:[
     "Realizar agendamentos, alterações e cancelamentos solicitados por profissionais conforme regra da gerência.",
     "Orientar profissionais sobre agenda, lista da vez, encaixes, horários e fluxo do dia.",
     "Alterar agenda apenas com autorização quando impactar cliente, faturamento ou outro profissional.",
     "Informar gerência sobre atraso, ausência, erro ou conflito.",
     "Priorizar sempre a cliente em relação a demandas internas.",
     "Comunicar alterações de agenda aos profissionais envolvidos."]},
-  {id:"cobranca", title:"Cobrança e Fechamento da Experiência", group:"Comercial", steps:[
+  {id:"cobranca", title:"Cobrança e Fechamento da Experiência", group:"Comercial", setor:"Recepção", steps:[
     "Cumprimentar a cliente e localizar a comanda no sistema.",
     "Confirmar os serviços realizados antes da cobrança.",
     "Em divergência, consultar quem lançou antes de editar e comunicar profissional e gerência.",
@@ -326,20 +326,262 @@ const POPS = [
     "Realizar pagamento e organizar comprovantes por forma e bandeira.",
     "Perguntar sobre próxima visita e produto para casa.",
     "Nunca permitir saída sem pagamento validado, salvo orientação expressa da gerência."]},
-  {id:"caixa", title:"Fechamento de Caixa", group:"Rotina", steps:[
+  {id:"caixa", title:"Fechamento de Caixa", group:"Rotina", setor:"Recepção", steps:[
     "Conferir pagamentos em débito, crédito, dinheiro e demais formas aceitas.",
     "Comparar comprovantes físicos, sistema e movimentação do dia.",
     "Realizar fechamento no sistema.",
     "Organizar comprovantes conforme padrão interno.",
     "Comunicar imediatamente qualquer divergência para a gerência.",
     "Registrar pendências ou ajustes que precisem de acompanhamento."]},
-  {id:"followup", title:"Follow-up e Ativações", group:"Relacionamento", steps:[
+  {id:"followup", title:"Follow-up e Ativações", group:"Relacionamento", setor:"Recepção", steps:[
     "Executar follow-ups D0, D1, D3, D5 e D7 para leads sem resposta ou em negociação.",
     "Classificar cada contato por etapa do funil: lead novo, contato feito, qualificado, oferta enviada, em objeção, agendado ou perdido.",
     "Ativar aniversariantes, inativas, canceladas, faltantes e serviços recorrentes vencidos.",
     "Registrar tentativa, canal, resposta, próxima ação e resultado.",
     "Sem horário ou profissional disponível: registrar motivo para análise da gerência.",
-    "Reportar semanalmente ativações, respostas, agendamentos e perdas por indisponibilidade."]}
+    "Reportar semanalmente ativações, respostas, agendamentos e perdas por indisponibilidade."]},
+  {id:"conversao", title:"Sequência de Conversão D0–D7", group:"Relacionamento", setor:"Recepção", steps:[
+    "Abrir o controle de Sequência de Conversão no início do período definido.",
+    "Filtrar clientes com status em aberto, sem resposta ou com próxima ação vencida.",
+    "Conferir data do primeiro contato, etapa atual, responsável, prazo e histórico.",
+    "Realizar a próxima tentativa conforme etapa D0, D1, D3, D5 ou D7.",
+    "Registrar canal utilizado, resposta, nova etapa, prazo e resultado.",
+    "Com interesse: direcionar para agendamento com data, horário, serviço e profissional.",
+    "Sem retorno até D7: classificar como sem resposta e encerrar com observação objetiva.",
+    "Impossibilidade operacional: registrar motivo (falta de horário, profissional, cliente indisponível).",
+    "Reportar ao fim do dia: convertidas, em aberto e impedimentos relevantes."]},
+  {id:"tec_padrao", title:"Padrão Comum de Atendimento Técnico", group:"Atendimento", setor:"Parceiros Técnicos", steps:[
+    "Receber a cliente pelo nome e apresentar-se quando necessário.",
+    "Confirmar serviço contratado e expectativa.",
+    "Explicar etapas essenciais sem prolongar.",
+    "Executar com técnica, higiene, cuidado e discrição.",
+    "Perguntar se a cliente está confortável.",
+    "Confirmar satisfação antes de finalizar.",
+    "Lançar serviço correto na comanda.",
+    "Organizar material, bancada ou sala após o atendimento."]},
+  {id:"tec_cabeleireiro", title:"Cabeleireiro", group:"Atendimento", setor:"Parceiros Técnicos", steps:[
+    "Realizar diagnóstico visual e conversa inicial.",
+    "Confirmar objetivo, histórico químico, manutenção e limite técnico.",
+    "Alinhar resultado possível antes de iniciar.",
+    "Executar serviço conforme técnica e segurança.",
+    "Orientar manutenção em casa e próximo retorno."]},
+  {id:"tec_jr_acolhimento", title:"Cabeleireiro Júnior — Acolhimento", group:"Atendimento", setor:"Parceiros Técnicos", steps:[
+    "Preparar lavatório, toalhas, produtos e apoio antes da cliente chegar.",
+    "Acolher cliente com educação e segurança.",
+    "Confirmar orientação do profissional responsável.",
+    "Executar lavagem, tratamento ou apoio conforme instrução.",
+    "Avisar profissional sobre qualquer sensibilidade ou observação da cliente."]},
+  {id:"tec_jr_finalizacao", title:"Cabeleireiro Júnior — Finalização", group:"Atendimento", setor:"Parceiros Técnicos", steps:[
+    "Confirmar acabamento esperado com o profissional responsável.",
+    "Preparar ferramentas e finalizadores.",
+    "Finalizar com cuidado, alinhamento e atenção aos detalhes.",
+    "Solicitar validação do profissional quando necessário.",
+    "Limpar estação e guardar materiais."]},
+  {id:"tec_manicure", title:"Manicure e Pedicure", group:"Atendimento", setor:"Parceiros Técnicos", steps:[
+    "Confirmar formato, comprimento, cor e preferência da cliente.",
+    "Usar materiais limpos, esterilizados ou descartáveis.",
+    "Abrir descartáveis diante da cliente quando aplicável.",
+    "Executar com delicadeza e higiene.",
+    "Separar instrumentos reutilizáveis para esterilização."]},
+  {id:"tec_nail", title:"Nail Design", group:"Atendimento", setor:"Parceiros Técnicos", steps:[
+    "Confirmar técnica, formato, comprimento, manutenção anterior e expectativa.",
+    "Avaliar condição da unha natural antes de iniciar.",
+    "Usar materiais adequados e higienizados.",
+    "Orientar cuidados, manutenção e retorno.",
+    "Registrar serviço correto na comanda."]},
+  {id:"tec_make", title:"Maquiagem", group:"Atendimento", setor:"Parceiros Técnicos", steps:[
+    "Confirmar ocasião, preferência, pele, sensibilidade e referência visual.",
+    "Preparar pele com higiene e produtos adequados.",
+    "Manter pincéis e materiais higienizados.",
+    "Validar pontos principais antes da finalização.",
+    "Orientar retoques e conservação."]},
+  {id:"tec_depilacao", title:"Depilação", group:"Atendimento", setor:"Parceiros Técnicos", steps:[
+    "Confirmar área, sensibilidade, alergias e uso de produtos ou medicamentos relevantes.",
+    "Garantir privacidade.",
+    "Usar materiais descartáveis ou higienizados conforme norma.",
+    "Executar com técnica, cuidado e discrição.",
+    "Orientar cuidados pós-procedimento."]},
+  {id:"tec_estetica", title:"Estética Facial e Corporal", group:"Atendimento", setor:"Parceiros Técnicos", steps:[
+    "Confirmar objetivo, queixa e contraindicações.",
+    "Explicar etapas principais.",
+    "Usar materiais limpos, descartáveis ou esterilizados.",
+    "Acompanhar conforto durante o procedimento.",
+    "Orientar cuidados pós-procedimento."]},
+  {id:"tec_podologia", title:"Podologia", group:"Atendimento", setor:"Parceiros Técnicos", steps:[
+    "Avaliar queixa, sensibilidade, histórico e condição dos pés.",
+    "Usar materiais esterilizados ou descartáveis.",
+    "Não executar procedimento fora de segurança técnica.",
+    "Orientar cuidados e retorno.",
+    "Encaminhar para avaliação especializada quando houver sinal de risco."]},
+  {id:"tec_masso", title:"Massoterapia", group:"Atendimento", setor:"Parceiros Técnicos", steps:[
+    "Confirmar objetivo, desconfortos, restrições e preferência de pressão.",
+    "Garantir privacidade e conforto.",
+    "Explicar tempo e condução do atendimento.",
+    "Ajustar pressão conforme retorno da cliente.",
+    "Orientar hidratação e cuidados após a sessão."]},
+  {id:"est_recebimento", title:"Recebimento de Produtos", group:"Controle", setor:"Estoque", steps:[
+    "Conferir nota, pedido, quantidade, marca, linha e validade.",
+    "Separar divergências antes de guardar.",
+    "Registrar entrada no controle definido.",
+    "Guardar por categoria, uso, validade e criticidade.",
+    "Comunicar faltas, avarias ou troca de item."]},
+  {id:"est_reposicao", title:"Reposição Diária", group:"Controle", setor:"Estoque", steps:[
+    "Conferir itens críticos no início do dia.",
+    "Repor pontos de uso conforme consumo real.",
+    "Evitar excesso em bancadas e salas.",
+    "Registrar itens abaixo do mínimo.",
+    "Acionar compra ou liderança antes de faltar."]},
+  {id:"est_interno", title:"Atendimento Interno ao Profissional", group:"Controle", setor:"Estoque", steps:[
+    "Receber solicitação conforme regra da unidade.",
+    "Conferir item, quantidade, finalidade e profissional.",
+    "Entregar somente o necessário.",
+    "Registrar saída.",
+    "Comunicar consumo fora do padrão."]},
+  {id:"est_inventario", title:"Inventário", group:"Controle", setor:"Estoque", steps:[
+    "Contar produtos por categoria.",
+    "Separar vencidos, avariados ou sem identificação.",
+    "Comparar físico com controle.",
+    "Registrar divergências.",
+    "Ajustar estoque apenas com autorização."]},
+  {id:"est_validade", title:"Validade e Conservação", group:"Controle", setor:"Estoque", steps:[
+    "Usar primeiro os produtos com vencimento mais próximo.",
+    "Manter embalagens fechadas, limpas e identificadas.",
+    "Não liberar produto vencido, sem rótulo ou com alteração de aspecto.",
+    "Sinalizar produtos parados ou com baixo giro."]},
+  {id:"est_desperdicio", title:"Controle de Desperdício", group:"Controle", setor:"Estoque", steps:[
+    "Acompanhar consumo por setor.",
+    "Identificar uso excessivo ou repetido.",
+    "Orientar equipe quando houver desperdício.",
+    "Registrar ocorrências para análise da liderança."]},
+  {id:"limp_diaria", title:"Abertura e Limpeza Diária", group:"Ambientes", setor:"Limpeza", steps:[
+    "Repor sabonete, papel, álcool, sacos de lixo e itens de banheiro.",
+    "Limpar recepção, salão, circulação, banheiros e áreas de apoio.",
+    "Higienizar bancadas, cadeiras, apoios, espelhos, maçanetas e superfícies de contato.",
+    "Retirar lixo e trocar sacos.",
+    "Comunicar falta de material, dano ou risco."]},
+  {id:"limp_revisao", title:"Revisão Durante a Operação", group:"Ambientes", setor:"Limpeza", steps:[
+    "Revisar banheiros em horários definidos.",
+    "Manter áreas comuns sem lixo, copos, toalhas ou materiais fora do lugar.",
+    "Atuar sem atrapalhar atendimentos.",
+    "Sinalizar piso molhado quando necessário."]},
+  {id:"limp_salas", title:"Limpeza de Salas Técnicas", group:"Ambientes", setor:"Limpeza", steps:[
+    "Limpar salas de maquiagem, podologia, depilação, estética, massoterapia, progressiva, mega hair e sala VIP conforme cronograma.",
+    "Higienizar maca, bancada, carrinho, espelho, lixeira, chão e pontos de contato.",
+    "Registrar sala limpa ou impedida por atendimento."]},
+  {id:"limp_pesada", title:"Limpeza Pesada Semanal", group:"Ambientes", setor:"Limpeza", steps:[
+    "Lavar banheiros.",
+    "Limpar rodapés, cantos, portas, áreas externas e pontos de acúmulo.",
+    "Organizar área de funcionários, copa e apoio.",
+    "Registrar conclusão no cronograma."]},
+  {id:"limp_banheiros", title:"Banheiros", group:"Ambientes", setor:"Limpeza", steps:[
+    "Conferir cheiro, papel, sabonete, lixo, piso, pia, espelho e vaso.",
+    "Limpar imediatamente quando houver uso intenso.",
+    "Registrar revisões conforme escala."]},
+  {id:"mano_recepcao", title:"Recepção do Veículo", group:"Veículos", setor:"Manobristas", steps:[
+    "Cumprimentar a cliente e orientar acesso à recepção.",
+    "Identificar veículo e chave conforme regra.",
+    "Verificar avarias aparentes antes de manobrar.",
+    "Guardar chave no local definido."]},
+  {id:"mano_guarda", title:"Guarda e Circulação", group:"Veículos", setor:"Manobristas", steps:[
+    "Manobrar com atenção ao fluxo da rua e pedestres.",
+    "Não usar celular durante manobra.",
+    "Não alterar rádio, banco, ar ou objetos da cliente sem necessidade.",
+    "Manter chave e identificação organizadas."]},
+  {id:"mano_devolucao", title:"Devolução do Veículo", group:"Veículos", setor:"Manobristas", steps:[
+    "Confirmar identificação.",
+    "Entregar chave apenas à cliente ou pessoa autorizada.",
+    "Agradecer a visita.",
+    "Informar imediatamente qualquer incidente ou atraso."]},
+  {id:"manu_ronda", title:"Ronda Preventiva", group:"Estrutura", setor:"Manutenção", steps:[
+    "Verificar iluminação, hidráulica, elétrica aparente, ar-condicionado, portas, fechaduras e mobiliário.",
+    "Registrar itens com falha.",
+    "Resolver pequenos ajustes autorizados.",
+    "Encaminhar demandas técnicas à liderança."]},
+  {id:"manu_chamado", title:"Chamado de Manutenção", group:"Estrutura", setor:"Manutenção", steps:[
+    "Receber demanda com local, problema e urgência.",
+    "Avaliar risco para cliente, equipe e operação.",
+    "Isolar área quando necessário.",
+    "Executar ou acionar prestador autorizado.",
+    "Registrar conclusão e pendência."]},
+  {id:"manu_equip", title:"Equipamentos", group:"Estrutura", setor:"Manutenção", steps:[
+    "Conferir funcionamento antes de uso crítico.",
+    "Retirar de uso equipamento com risco.",
+    "Identificar equipamento parado.",
+    "Comunicar liderança para reparo, troca ou compra."]},
+  {id:"copa_diaria", title:"Organização Diária", group:"Equipe", setor:"Copa", steps:[
+    "Manter pia, bancada, mesa, geladeira e lixeira limpas.",
+    "Guardar itens pessoais no local correto.",
+    "Não deixar louça, alimento aberto ou lixo acumulado.",
+    "Repor itens permitidos conforme rotina."]},
+  {id:"copa_uso", title:"Uso da Copa", group:"Equipe", setor:"Copa", steps:[
+    "Usar a copa sem comprometer atendimento ou circulação.",
+    "Respeitar horários e regras internas.",
+    "Identificar alimentos pessoais quando aplicável.",
+    "Descartar itens vencidos ou sem identificação conforme orientação."]},
+  {id:"copa_fechamento", title:"Fechamento da Copa", group:"Equipe", setor:"Copa", steps:[
+    "Recolher lixo.",
+    "Limpar pia e bancada.",
+    "Conferir geladeira e utensílios.",
+    "Deixar o ambiente pronto para o próximo dia."]},
+  {id:"gov_conferencia", title:"Conferência Diária", group:"Governança", setor:"Gestão", steps:[
+    "Revisar cronogramas do dia.",
+    "Identificar tarefas não concluídas.",
+    "Priorizar pendências que impactam cliente, segurança, caixa, estoque ou agenda.",
+    "Cobrar responsável sem exposição desnecessária.",
+    "Registrar conclusão."]},
+  {id:"gov_pendencias", title:"Tratamento de Pendências", group:"Governança", setor:"Gestão", steps:[
+    "Descrever o problema de forma objetiva.",
+    "Indicar setor, responsável, prazo e impacto.",
+    "Atualizar status até conclusão.",
+    "Escalar para liderança quando o prazo vencer.",
+    "Validar conclusão por conferência real, não apenas confirmação verbal."]},
+  {id:"gov_treinamento", title:"Treinamento de Equipe", group:"Governança", setor:"Gestão", steps:[
+    "Apresentar o POP antes de cobrar execução.",
+    "Validar entendimento com perguntas práticas.",
+    "Acompanhar execução real.",
+    "Corrigir no momento, com clareza e respeito.",
+    "Registrar necessidade de reciclagem."]},
+  {id:"gov_atualizacao", title:"Atualização de POP", group:"Governança", setor:"Gestão", steps:[
+    "Registrar sugestão ou falha encontrada.",
+    "Avaliar impacto operacional.",
+    "Atualizar apenas com autorização da liderança.",
+    "Comunicar mudança para todos os envolvidos.",
+    "Manter histórico da versão vigente."]},
+  {id:"ctrl_checklist", title:"Checklist Diário Operacional", group:"Controles", setor:"Gestão", steps:[
+    "Abrir a aba Checklist Diário e preencher data, unidade e responsável.",
+    "Validar cada atividade chave por área, sem detalhar demais.",
+    "Selecionar o status correto: Conforme, Atenção, Não realizado ou Em andamento.",
+    "Usar observação apenas quando houver pendência, exceção ou informação útil.",
+    "Corrigir no mesmo dia tudo que estiver como Atenção ou Não realizado.",
+    "Conferir o percentual concluído (mínimo 90%) e validar com a gerência."]},
+  {id:"ctrl_auditoria_semanal", title:"Auditoria Semanal", group:"Controles", setor:"Gestão", steps:[
+    "Selecionar semana, unidade, auditor e setor avaliado.",
+    "Avaliar somente critérios essenciais, sem excesso de perguntas.",
+    "Dar nota de 1 a 5 com base em evidência observável.",
+    "Registrar ação corretiva quando a nota for menor que 4.",
+    "Acompanhar o alerta de intervenção necessária no dashboard.",
+    "Revisar na semana seguinte se a ação foi aplicada."]},
+  {id:"ctrl_auditoria_mensal", title:"Auditoria Mensal de POPs", group:"Controles", setor:"Gestão", steps:[
+    "Listar os POPs prioritários do mês.",
+    "Registrar última auditoria, setor, nota percentual e conformidade.",
+    "Classificar como 100%, parcial ou crítico (abaixo de 70 é crítico).",
+    "Criar plano de ação para POP parcial ou crítico.",
+    "Usar o ranking para identificar melhores práticas e pontos frágeis.",
+    "Revisar POPs críticos antes de criar novos procedimentos."]},
+  {id:"ctrl_desvios", title:"Correção de Desvios", group:"Controles", setor:"Gestão", steps:[
+    "Registrar data, setor e descrição objetiva do desvio.",
+    "Classificar impacto: baixo, médio, alto ou crítico.",
+    "Descrever causa raiz, não apenas o sintoma.",
+    "Definir correção definitiva, responsável e prazo.",
+    "Atualizar status até concluir.",
+    "Impacto alto ou crítico: priorizar a correção antes de novas demandas."]},
+  {id:"ctrl_reciclagem", title:"Reciclagens e Treinamentos", group:"Controles", setor:"Gestão", steps:[
+    "Registrar data, equipe/setor, tema e motivo.",
+    "Vincular o treinamento à origem: auditoria, desvio, atualização ou cultura.",
+    "Informar responsável e participantes.",
+    "Definir próxima revisão para medir aderência.",
+    "Atualizar status: planejado, realizado ou reagendado.",
+    "Usar o dashboard para enxergar setores mais treinados e lacunas."]}
 ];
 
 /* Matriz de Ativações — da planilha oficial (Julho) */
@@ -497,6 +739,7 @@ let missaoAberta=null;
 let quizEstado=null;
 let subTarefas="hoje";
 let buscaQuery="";
+let procSetor="Todos";
 let vezView="vez";
 
 function setView(v){DB.view=v;missaoAberta=null;quizEstado=null;save();render()}
@@ -554,7 +797,7 @@ function renderHome(){
     </button>
     <button class="module" onclick="setView('procedimentos')">
       <span class="tag">Consulta</span><strong>Procedimentos</strong>
-      <span>O Google da operação: busque qualquer POP e receba o passo a passo oficial na hora.</span>
+      <span>O Google da operação: todos os POPs da casa — recepção, técnicos, estoque, limpeza, gestão — com busca instantânea.</span>
     </button>
     <button class="module" onclick="setView('tarefas')">
       <span class="tag">Execução</span><strong>Tarefas & Atividades</strong>
@@ -668,24 +911,29 @@ function highlight(text,q){
 }
 function renderProcedimentos(){
   const q=buscaQuery.trim().toLowerCase();
-  const hits=q?POPS.filter(p=>(p.title+" "+p.group+" "+p.steps.join(" ")).toLowerCase().includes(q)):POPS;
-  const groups=[...new Set(hits.map(p=>p.group))];
+  const setores=[...new Set(POPS.map(p=>p.setor))];
+  const base=procSetor==="Todos"?POPS:POPS.filter(p=>p.setor===procSetor);
+  const hits=q?base.filter(p=>(p.title+" "+p.group+" "+p.setor+" "+p.steps.join(" ")).toLowerCase().includes(q)):base;
+  const grupos=[...new Set(hits.map(p=>p.setor+" · "+p.group))];
   return `
   <section class="card section">
     <h2>Consulta de procedimentos</h2>
     <div class="searchbox">
-      <input id="busca" type="search" placeholder="Busque: encaixe, espera, caixa, follow-up, aniversariante..." value="${esc(buscaQuery)}" />
+      <input id="busca" type="search" placeholder="Busque: encaixe, espera, caixa, inventário, esterilização, desvio..." value="${esc(buscaQuery)}" />
     </div>
-    <div class="muted" style="font-size:.82rem;margin-top:8px">${hits.length} procedimento(s) · fonte: POP oficial Recepção, Agenda e Relacionamento</div>
+    <div class="subtabs" style="margin:12px 0 0">
+      ${["Todos",...setores].map(st=>`<button class="subtab ${procSetor===st?"on":""}" onclick="procSetor='${st}';render()">${esc(st)}</button>`).join("")}
+    </div>
+    <div class="muted" style="font-size:.82rem;margin-top:10px">${hits.length} de ${POPS.length} procedimentos · fonte: POPs oficiais Sala D'Oro (todas as áreas)</div>
   </section>
-  ${groups.map(g=>`
+  ${grupos.map(g=>`
     <section class="card section">
       <h2>${esc(g)}</h2>
       <div class="hits">
-        ${hits.filter(p=>p.group===g).map(p=>`
+        ${hits.filter(p=>p.setor+" · "+p.group===g).map(p=>`
           <details class="popcard" ${q?"open":""}>
             <summary>${highlight(p.title,q)} <span class="pill gold">POP</span></summary>
-            <ul>${p.steps.map(s=>`<li>${highlight(s,q)}</li>`).join("")}</ul>
+            <ul>${p.steps.map(st2=>`<li>${highlight(st2,q)}</li>`).join("")}</ul>
           </details>`).join("")}
       </div>
     </section>`).join("")}`;
