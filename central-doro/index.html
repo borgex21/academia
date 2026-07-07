@@ -629,19 +629,53 @@ const POPS = [
     "Informar responsável e participantes.",
     "Definir próxima revisão para medir aderência.",
     "Atualizar status: planejado, realizado ou reagendado.",
-    "Usar o dashboard para enxergar setores mais treinados e lacunas."]}
+    "Usar o dashboard para enxergar setores mais treinados e lacunas."]},
+  {id:"com_funil", title:"Atendimento de Clientes do Tráfego Pago", group:"Funil", setor:"Comercial", steps:[
+    "Classificar cada contato por etiqueta de funil: cliente novo, qualificado, oferta enviada, em objeção, agendado ou perdido.",
+    "Primeiro contato automático: nome do salão + entusiasmo + uma pergunta objetiva sobre o serviço buscado.",
+    "Depois da resposta, conduzir para decisão: 'Prefere agendar para essa semana ou para a próxima?'",
+    "Se o cliente esfriar, uma ligação curta perguntando se ainda quer o horário.",
+    "Qualificação rápida — perguntar sempre: qual serviço, quando quer agendar, se prefere algum profissional.",
+    "Cliente quente: quer essa semana, pergunta horário, pergunta valor. Cliente frio: demora dias, é só curiosidade."]},
+  {id:"com_sequencia", title:"Sequência de Conversão D0–D7", group:"Funil", setor:"Comercial", steps:[
+    "D0 — mensagem inicial automática: saudação, nome do salão, pergunta sobre o serviço buscado.",
+    "D1 — 'Consegui horários disponíveis essa semana e a próxima. Quer que eu te envie as opções?'",
+    "D3 — 'Nossa agenda já está quase completa. Ainda gostaria de agendar?'",
+    "D5 — prova social curta: compartilhar que outras clientes têm gostado dos resultados e da experiência.",
+    "D7 — última tentativa, educada, encerrando o atendimento mas deixando a porta aberta.",
+    "Se o cliente respondeu mas parou: D1 recap do interesse + pergunta de fechamento, D3 uma ligação curta, D5 urgência leve sem pressão.",
+    "Sem retorno até o D7: encerrar a sequência com observação objetiva do motivo."]},
+  {id:"com_objecoes", title:"Tratamento de Objeções", group:"Script", setor:"Comercial", steps:[
+    "Ouvir a objeção inteira antes de responder — nunca interromper.",
+    "'Achei caro': reforçar que o time é especialista e os produtos são premium, por isso o resultado é diferenciado.",
+    "'Agora não sei se consigo': oferecer flexibilidade de horário essa semana e a próxima.",
+    "'Vou pensar': avisar com educação que os horários mais disputados costumam fechar rápido.",
+    "'Vi outro mais barato': reposicionar para qualidade, segurança e resultado — por isso as clientes voltam sempre.",
+    "Nunca discutir preço isolado — sempre reconduzir para valor e para o próximo passo."]},
+  {id:"com_regras", title:"Regras de Abordagem e Mentalidade Premium", group:"Padrão", setor:"Comercial", steps:[
+    "Sempre conferir histórico de preferência de profissional antes de chamar a cliente.",
+    "Sempre usar o nome da cliente.",
+    "Sempre finalizar toda mensagem com pergunta de agendamento — nunca deixar em aberto tipo 'qualquer coisa me avisa'.",
+    "Erros que não podem acontecer: demorar para responder, não pedir agendamento direto, textos longos, desistir cedo, falar só de preço.",
+    "Mentalidade do salão premium: responder rápido, conduzir para agendamento, criar urgência natural, mostrar valor, insistir com educação.",
+    "Controle diário: anotar ativação feita, quantidade de contatos e quantidade de agendamentos fechados."]}
 ];
 
 /* Matriz de Ativações — da planilha oficial (Julho) */
 const ATIVACOES = [
-  {id:"d0d7", nome:"Sequência de conversão D0–D7", freq:"Diário", dia:"Todos os dias", dow:[1,2,3,4,5,6], publico:"Clientes do dia 0 ao dia 7", criterio:"Conversas em aberto sem resposta"},
+  {id:"aniversariantes", nome:"Aniversariantes", freq:"Mensal", dia:"Semana anterior à virada do mês", dow:[], publico:"Clientes aniversariantes do mês", criterio:"Presente especial (tratamento capilar) + convite para agendar"},
+  {id:"reflexo", nome:"Reflexo", freq:"Semanal", dia:"Terça", dow:[2], publico:"Clientes sem reflexo há mais de 30 dias", criterio:"Retomar continuidade do cuidado"},
+  {id:"coloracao", nome:"Coloração — Retoque de Raiz", freq:"Semanal", dia:"Terça", dow:[2], publico:"Clientes com coloração há mais de 30 dias", criterio:"Renovar e manter a cor em dia"},
+  {id:"unha_gel", nome:"Manutenção Unha em Gel", freq:"Semanal", dia:"Terça", dow:[2], publico:"Clientes com unha em gel há mais de 20 dias", criterio:"Renovar manutenção e manter sempre perfeitas"},
+  {id:"corte_masc", nome:"Corte Masculino", freq:"Semanal", dia:"Terça", dow:[2], publico:"Clientes com corte masculino há mais de 20 dias", criterio:"Ajustar corte e manter o estilo em dia"},
+  {id:"podologia", nome:"Podologia", freq:"Semanal", dia:"Terça", dow:[2], publico:"Clientes com podologia há mais de 30 dias", criterio:"Continuar tratamento e bem-estar dos pés"},
+  {id:"faltantes", nome:"Canceladas ou Faltantes", freq:"Semanal", dia:"Quinta", dow:[4], publico:"Clientes faltantes ou canceladas da semana anterior", criterio:"Recuperar agenda perdida"},
+  {id:"inativas6m", nome:"Clientes sem Retorno há 6 Meses", freq:"Mensal", dia:"Pontualmente", dow:[], publico:"Clientes sem visita há 6 meses ou mais", criterio:"Pesquisa de satisfação + brinde de retorno"},
+  {id:"pos_google", nome:"Pós-atendimento — Avaliação Google", freq:"Semanal", dia:"Sábado", dow:[6], publico:"Clientes novas da última semana", criterio:"Checar experiência e pedir avaliação no Google"},
   {id:"pos", nome:"Pós-atendimento", freq:"Diário", dia:"1 dia após atendimento", dow:[1,2,3,4,5,6], publico:"Cliente atendida ontem", criterio:"Cliente nova realizou serviço no dia anterior"},
-  {id:"faltantes", nome:"Faltantes / Canceladas", freq:"Semanal", dia:"Quinta", dow:[4], publico:"Clientes faltantes", criterio:"Clientes que faltaram e precisam de retomada"},
   {id:"clube30", nome:"Ação Clube D'Oro 30 dias", freq:"Quinzenal", dia:"Quinzenal", dow:[1], publico:"Clientes dentro do prazo", criterio:"Clientes dentro de 30 dias no máximo"},
   {id:"indica3", nome:"Ação Indica 3", freq:"Pontual", dia:"Pontualmente", dow:[], publico:"180 melhores clientes", criterio:"Clientes indicam 3 pessoas"},
-  {id:"recorrentes", nome:"Ativações por serviço recorrente", freq:"Semanal", dia:"Terça", dow:[2], publico:"Clientes no tempo médio de retorno", criterio:"Clientes dentro da janela de retorno"},
-  {id:"inativas", nome:"Clientes inativas", freq:"Mensal", dia:"Pontualmente", dow:[], publico:"Clientes de alto valor sem retorno", criterio:"Ticket ou frequência alta, sem visita há 45+ dias"},
-  {id:"aniversariantes", nome:"Aniversariantes", freq:"Mensal", dia:"Semana anterior à virada do mês", dow:[], publico:"Aniversariantes do próximo mês", criterio:"Aniversariantes contatadas no mês"}
+  {id:"inativas", nome:"Clientes Inativas (alto valor)", freq:"Mensal", dia:"Pontualmente", dow:[], publico:"Clientes de alto valor sem retorno", criterio:"Ticket ou frequência alta, sem visita há 45+ dias"}
 ];
 
 /* Cronograma semanal de recepção */
@@ -1277,7 +1311,7 @@ const VIDEOS=[
  {id:"vapp",titulo:"Conheça o Central D'Oro",sub:"O app da operação em 90 segundos",vis:"modules",cenas:[
   {d:7,k:"Central D'Oro · Sala D'Oro",t:"Um lugar só para operar.",vis:"logo",pts:["Treinar, consultar, executar e distribuir — sem caderno, sem improviso."]},
   {d:9,k:"Módulo 1",t:"Treinamentos",vis:"steps",pts:["Trilha em 5 níveis, do fundamento ao avançado.","Cada missão: passo a passo oficial + decisão de campo.","Um nível concluído libera o próximo."]},
-  {d:9,k:"Módulo 2",t:"Procedimentos",vis:"search",pts:["O Google da operação: 54 POPs de todas as áreas.","Digite uma palavra e receba o passo a passo oficial.","Recepção, técnicos, estoque, limpeza, gestão."]},
+  {d:9,k:"Módulo 2",t:"Procedimentos",vis:"search",pts:["O Google da operação: 58 POPs de todas as áreas.","Digite uma palavra e receba o passo a passo oficial.","Recepção, técnicos, estoque, limpeza, gestão, comercial."]},
   {d:9,k:"Módulo 3",t:"Tarefas & Atividades",vis:"calendar",pts:["Cronograma da recepção + Matriz de Ativações.","A aba Hoje mostra o que é prioridade agora.","Tudo registrado com status e evidência."]},
   {d:9,k:"Módulo 4",t:"Lista da Vez",vis:"cycle",pts:["Rodízio justo por categoria.","Presença, preferência e ocupação com regra clara.","Histórico auditável de cada decisão."]},
   {d:7,k:"Regra de ouro",t:"O que não foi registrado, não aconteceu.",vis:"shield",pts:["Use o Central D'Oro em cada turno. O padrão agradece."]}]},
@@ -1291,19 +1325,22 @@ const VIDEOS=[
   {d:9,k:"Revenda",t:"A indicação vem primeiro",vis:"steps",pts:["Pergunte: algum produto foi indicado pelo profissional?","Sem indicação: entenda a necessidade antes de sugerir.","Deixe ver, tocar, conhecer a textura.","Combine acompanhar o resultado depois."]},
   {d:7,k:"Fechamento de comanda",t:"A experiência termina no pagamento",vis:"check",pts:["Confirmar serviços antes de cobrar.","Valor com discrição e clareza.","Perguntar se ficou feliz — insatisfação chama a gerência.","Nunca sair sem pagamento validado."]}]},
  {id:"vativacoes",titulo:"Ativações · Relacionamento",sub:"A máquina que recupera e enche agenda",vis:"funnel",cenas:[
-  {d:7,k:"Matriz de Ativações",t:"Agenda cheia não é sorte. É método.",vis:"funnel",pts:["Reagendar quem sumiu, lembrar quem esqueceu, reativar quem sumiu de vez."]},
-  {d:9,k:"Todo dia",t:"A diária que nunca falta",vis:"chat",pts:["Pós-atendimento: cliente atendida ontem recebe contato hoje.","Simples, curto, no dia seguinte — sem exceção."]},
-  {d:9,k:"Ritmo da semana",t:"Terça e quinta são sagradas",vis:"calendar",pts:["Terça: serviço com retorno previsto atrasado — janela de retorno vencida.","Quinta: faltantes e canceladas — recuperar agenda perdida."]},
-  {d:10,k:"Mensais e especiais",t:"As quatro de ciclo longo",vis:"cycle",pts:["Clube D'Oro 30 dias: quinzenal, clientes no prazo.","Indica 3: as 180 melhores clientes indicam.","Inativas: alto valor sem visita há 45+ dias.","Aniversariantes: semana anterior à virada do mês."]},
-  {d:9,k:"Registro",t:"Cada tentativa vira dado",vis:"check",pts:["Tentativa, canal, resposta, próxima ação, resultado.","Sem horário ou profissional? Registrar o motivo.","Sexta: reporte com ativações, respostas e agendamentos."]},
-  {d:8,k:"Prova real",t:"Isso funciona.",vis:"chart",pts:["Num único mês: 577 clientes ativadas, 27 agendamentos gerados.","Constância vale mais que campanha."]}]},
+  {d:7,k:"Ativações de Relacionamento e Retorno",t:"Agenda cheia não é sorte. É método.",vis:"funnel",pts:["Reagendar quem sumiu, lembrar quem esqueceu, reativar quem sumiu de vez."]},
+  {d:9,k:"Toda semana",t:"Cinco lembretes por tempo de serviço",vis:"chat",pts:["Reflexo (+30d), coloração (+30d), unha em gel (+20d), corte masculino (+20d), podologia (+30d).","Sempre: checar preferência de profissional e confirmar que não está agendada."]},
+  {d:9,k:"Ritmo da semana",t:"Terça e quinta são sagradas",vis:"calendar",pts:["Terça: os cinco lembretes de retorno por serviço.","Quinta: canceladas e faltantes da semana anterior — recuperar agenda perdida."]},
+  {d:9,k:"Reativação",t:"Quem sumiu também merece um convite",vis:"heart",pts:["6 meses sem voltar: pesquisa de satisfação + brinde de retorno, mensal.","Pós-atendimento de novas: checar experiência e pedir avaliação no Google, semanal."]},
+  {d:10,k:"Mensais e especiais",t:"As três de ciclo longo",vis:"cycle",pts:["Aniversariantes: presente especial, semana anterior à virada do mês.","Clube D'Oro 30 dias: quinzenal, clientes no prazo.","Indica 3: as 180 melhores clientes indicam."]},
+  {d:9,k:"Regras de sempre",t:"Três hábitos que não têm exceção",vis:"shield",pts:["Sempre conferir histórico de preferência antes de chamar a cliente.","Sempre usar o nome da cliente.","Sempre finalizar com pergunta de agendamento."]},
+  {d:8,k:"Controle diário",t:"Isso funciona quando é medido.",vis:"chart",pts:["Anotar ativação feita, contatos e agendamentos fechados.","Ex.: Reflexo 20 contatos, 6 agendamentos.","Constância vale mais que campanha."]}]},
  {id:"vcomercial",titulo:"Comercial · Sequência de Conversão",sub:"Script de conexão, objeção e valor antes do preço",vis:"chart",cenas:[
   {d:7,k:"Comercial",t:"Vender é conduzir, não empurrar.",vis:"logo",pts:["A sequência de conversão é o script que transforma contato em agendamento."]},
-  {d:9,k:"Conectar primeiro",t:"Ninguém compra de quem não ouviu",vis:"heart",pts:["Chame pelo nome, pergunte antes de ofertar.","Entenda o motivo real do contato antes de falar de serviço.","Conexão genuína vem antes de qualquer proposta."]},
-  {d:9,k:"Valor antes do preço",t:"Explique a transformação, depois o número",vis:"steps",pts:["Descreva o resultado e a experiência antes de falar valor.","Preço sem contexto vira objeção automática.","Só informe o valor depois que a cliente entende o que está levando."]},
-  {d:9,k:"Tratamento de objeções",t:"Objeção não é recusa, é dúvida",vis:"chat",pts:["Ouça a objeção inteira, sem interromper.","Reconheça antes de responder: 'entendo, faz sentido perguntar isso.'","Responda com fato e reconduza para o próximo passo — nunca discuta."]},
-  {d:10,k:"Sequência de Conversão D0–D7",t:"Cliente sem resposta não é cliente perdido",vis:"funnel",pts:["Filtrar em aberto, sem resposta, ação vencida.","Tentativa conforme a etapa: D0, D1, D3, D5, D7.","Interesse? Agendamento com data, horário e profissional.","Sem retorno até D7: encerrar com observação objetiva."]},
-  {d:8,k:"Regra de ouro",t:"Nenhum contato sem próxima ação.",vis:"shield",pts:["Todo impedimento vira registro. Todo registro vira gestão."]}]},
+  {d:9,k:"Funil do cliente novo",t:"Toda etapa tem uma etiqueta",vis:"funnel",pts:["Cliente novo → qualificado → oferta enviada → em objeção → agendado ou perdido.","Primeiro contato: nome do salão, entusiasmo genuíno, uma pergunta — qual serviço você busca hoje?","Depois da resposta: 'Prefere agendar essa semana ou a próxima?'"]},
+  {d:9,k:"Qualificação rápida",t:"Cliente quente ou cliente frio?",vis:"heart",pts:["Quente: quer essa semana, pergunta horário, pergunta valor.","Frio: demora dias, é só curiosidade.","Pergunte sempre: qual serviço, quando, se prefere algum profissional."]},
+  {d:9,k:"Valor antes do preço",t:"Mostre o resultado, depois o número",vis:"steps",pts:["Nunca fale só de preço — é o erro mais caro da conversa.","Reforce profissional especialista, produto premium, experiência diferenciada.","Preço sem contexto vira objeção automática."]},
+  {d:10,k:"Sequência de Conversão D0–D7",t:"Cliente sem resposta não é cliente perdido",vis:"funnel",pts:["D0: primeiro contato. D1: 'consigo horários agora'.","D3: 'agenda quase completa'. D5: prova social.","D7: última tentativa, educada, sempre com a porta aberta."]},
+  {d:9,k:"Se respondeu mas parou",t:"O recuo tem um script próprio",vis:"clock",pts:["D1: retomar com recap do interesse + 'quer que eu já agende?'","D3: uma ligação curta. D5: urgência leve, sem pressão."]},
+  {d:10,k:"Tratamento de objeções",t:"Objeção não é recusa, é dúvida",vis:"chat",pts:["'Achei caro' → reforçar especialista, produto premium, resultado diferenciado.","'Vou pensar' → avisar que os horários disputados fecham rápido.","'Vi mais barato' → reposicionar para qualidade, segurança e por que a cliente volta sempre."]},
+  {d:8,k:"Regra de ouro",t:"Nenhuma mensagem termina em aberto.",vis:"shield",pts:["Sempre feche com pergunta: 'Quer que eu já agende?' ou 'Essa semana ou a próxima?'","Nunca: 'qualquer coisa me avisa'."]}]},
  {id:"vcultura",titulo:"Cultura Sala D'Oro",sub:"O que permanece quando ninguém está olhando",vis:"logo",cenas:[
   {d:8,k:"Identidade",t:"Sala D'Oro não é apenas uma marca.",vis:"logo",pts:["É uma forma de organizar percepção, decisão e execução.","Elegância sem afetação. Precisão sem dureza."]},
   {d:8,k:"Propósito",t:"O padrão não depende de improviso.",vis:"shield",pts:["Organizar a experiência de trabalho para que o padrão não dependa de improviso individual.","A disciplina tem um porquê."]},
