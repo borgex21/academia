@@ -197,6 +197,52 @@ mark{background:rgba(182,146,85,.28);color:inherit;border-radius:3px;padding:0 2
 .footbtn{flex:1;border:0;background:transparent;color:var(--muted);border-radius:12px;padding:9px 4px;font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em}
 .footbtn.on{background:#fff;color:var(--text);box-shadow:0 6px 16px rgba(15,23,42,.08)}
 .hidden{display:none!important}
+
+/* Vídeos */
+.vcards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media(max-width:860px){.vcards{grid-template-columns:1fr}}
+.vcard{display:grid;gap:8px;padding:20px;text-align:left;border-radius:24px;border:1px solid rgba(201,168,76,.35);
+  background:linear-gradient(160deg,#17150F,#0F0E0B);color:#F4EBD8;box-shadow:var(--shadow);
+  transition:transform .15s ease}
+.vcard:hover{transform:translateY(-2px)}
+.vcard .vk{font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:#C9A84C;font-weight:800}
+.vcard strong{font-size:1.05rem;letter-spacing:-.02em;color:#E8D5A3}
+.vcard span{color:#9B907D;font-size:.85rem;line-height:1.45}
+.vcard .vmeta{display:flex;justify-content:space-between;align-items:center;margin-top:4px}
+.vplay{display:inline-grid;place-items:center;width:38px;height:38px;border-radius:50%;background:#C9A84C;color:#17150F;font-size:.9rem}
+.vplayer{position:fixed;inset:0;z-index:200;display:none;flex-direction:column;background:
+  radial-gradient(circle at 20% -10%, rgba(201,168,76,.16), transparent 36%),
+  radial-gradient(circle at 100% 0%, rgba(232,213,163,.07), transparent 30%),#0F0E0B;color:#F4EBD8}
+.vplayer.open{display:flex}
+.vtop{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 16px}
+.vtop .vt{font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:#C9A84C;font-weight:800}
+.vclose{border:1px solid rgba(201,168,76,.3);background:transparent;color:#E8D5A3;border-radius:999px;padding:8px 14px;font-size:.8rem;font-weight:800}
+.vprog{display:flex;gap:5px;padding:0 16px}
+.vprog i{flex:1;height:3px;border-radius:999px;background:rgba(244,235,216,.16);overflow:hidden;display:block}
+.vprog i b{display:block;height:100%;width:0;background:#C9A84C;border-radius:inherit}
+.vstage{flex:1;display:grid;place-items:center;padding:20px 22px;overflow:hidden}
+.vinner{width:min(680px,100%);display:grid;gap:16px;text-align:center;justify-items:center}
+.vkick{font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:#C9A84C;font-weight:800;animation:vfade .6s ease both}
+.vtitle{font-size:clamp(1.7rem,6vw,2.7rem);line-height:1.04;letter-spacing:-.045em;font-weight:900;color:#E8D5A3;animation:vfade .6s .1s ease both;margin:0}
+.vlines{display:grid;gap:9px;justify-items:center}
+.vline{max-width:56ch;padding:11px 16px;border-radius:14px;background:rgba(244,235,216,.05);
+  border:1px solid rgba(201,168,76,.2);color:#F4EBD8;font-size:.95rem;line-height:1.5;
+  opacity:0;animation:vfade .55s ease forwards}
+.vvis{height:120px;display:grid;place-items:center;animation:vfade .7s .05s ease both}
+.vvis svg{height:110px;width:auto;max-width:280px;overflow:visible}
+.vfoot{display:flex;justify-content:center;gap:10px;padding:14px 16px calc(16px + env(safe-area-inset-bottom))}
+.vbtn{border:1px solid rgba(201,168,76,.3);background:rgba(244,235,216,.05);color:#E8D5A3;border-radius:999px;min-width:46px;padding:11px 16px;font-weight:800;font-size:.85rem}
+.vbtn.gold{background:#C9A84C;border-color:#C9A84C;color:#17150F}
+@keyframes vfade{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes vpulse{0%,100%{transform:scale(1);opacity:.9}50%{transform:scale(1.12);opacity:1}}
+@keyframes vspin{to{transform:rotate(360deg)}}
+@keyframes vdash{to{stroke-dashoffset:0}}
+@keyframes vfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.vp1{animation:vpulse 2.4s ease-in-out infinite}
+.vsp{transform-origin:center;animation:vspin 14s linear infinite}
+.vfl{animation:vfloat 3.2s ease-in-out infinite}
+.vdr{stroke-dasharray:300;stroke-dashoffset:300;animation:vdash 1.6s .3s ease forwards}
+
 @media(max-width:860px){
   .grid2{grid-template-columns:1fr}
   .kpis{grid-template-columns:1fr 1fr}
@@ -223,6 +269,8 @@ mark{background:rgba(182,146,85,.28);color:inherit;border-radius:3px;padding:0 2
 <div class="footbar">
   <div class="footinner" id="footNav"></div>
 </div>
+
+<div class="vplayer" id="vplayer"></div>
 
 <div class="modal" id="modal" onclick="if(event.target.id==='modal')closeModal()">
   <div class="sheet">
@@ -732,7 +780,7 @@ function normalizeVez(){
 
 /* ============ NAVEGAÇÃO ============ */
 const VIEWS=[
-  ["home","Início"],["trilha","Treinamentos"],["procedimentos","Procedimentos"],
+  ["home","Início"],["trilha","Treinamentos"],["videos","Vídeos"],["procedimentos","Procedimentos"],
   ["tarefas","Tarefas"],["vez","Lista da Vez"]
 ];
 let missaoAberta=null;
@@ -755,6 +803,7 @@ function render(){
   const main=document.getElementById("main");
   main.innerHTML =
     DB.view==="trilha" ? renderTrilha() :
+    DB.view==="videos" ? renderVideos() :
     DB.view==="procedimentos" ? renderProcedimentos() :
     DB.view==="tarefas" ? renderTarefas() :
     DB.view==="vez" ? renderVez() :
@@ -794,6 +843,10 @@ function renderHome(){
     <button class="module" onclick="setView('trilha')">
       <span class="tag">Formação</span><strong>Treinamentos</strong>
       <span>Trilha completa em 5 níveis, do fundamento ao relacionamento avançado. ${t.done}/${t.total} missões concluídas.</span>
+    </button>
+    <button class="module" onclick="setView('videos')">
+      <span class="tag">Mini-aulas</span><strong>Vídeos</strong>
+      <span>7 vídeos animados: o app, manual básico, ativações, comercial, cultura e os rituais de massagem.</span>
     </button>
     <button class="module" onclick="setView('procedimentos')">
       <span class="tag">Consulta</span><strong>Procedimentos</strong>
@@ -1216,6 +1269,161 @@ function resetCategoria(){
     counts:Object.fromEntries(c.profs.map(n=>[n,0]))};
   vezLog("reset",{texto:`Categoria ${c.name} resetada`});
   save();render();
+}
+
+
+/* ============ VÍDEOS ANIMADOS ============ */
+const VIDEOS=[
+ {id:"vapp",titulo:"Conheça o Case",sub:"O app da operação em 90 segundos",vis:"modules",cenas:[
+  {d:7,k:"Case · Sala D'Oro",t:"Um lugar só para operar.",vis:"logo",pts:["Treinar, consultar, executar e distribuir — sem caderno, sem improviso."]},
+  {d:9,k:"Módulo 1",t:"Treinamentos",vis:"steps",pts:["Trilha em 5 níveis, do fundamento ao avançado.","Cada missão: passo a passo oficial + decisão de campo.","Um nível concluído libera o próximo."]},
+  {d:9,k:"Módulo 2",t:"Procedimentos",vis:"search",pts:["O Google da operação: 54 POPs de todas as áreas.","Digite uma palavra e receba o passo a passo oficial.","Recepção, técnicos, estoque, limpeza, gestão."]},
+  {d:9,k:"Módulo 3",t:"Tarefas & Atividades",vis:"calendar",pts:["Cronograma da recepção + Matriz de Ativações.","A aba Hoje mostra o que é prioridade agora.","Tudo registrado com status e evidência."]},
+  {d:9,k:"Módulo 4",t:"Lista da Vez",vis:"cycle",pts:["Rodízio justo por categoria.","Presença, preferência e ocupação com regra clara.","Histórico auditável de cada decisão."]},
+  {d:7,k:"Regra de ouro",t:"O que não foi registrado, não aconteceu.",vis:"shield",pts:["Use o Case em cada turno. O padrão agradece."]}]},
+ {id:"vmanual",titulo:"Manual Básico · Relacionamento",sub:"O essencial da recepção Sala D'Oro",vis:"heart",cenas:[
+  {d:7,k:"Equipe de Relacionamento",t:"Você é a primeira prova do padrão.",vis:"logo",pts:["Educação, objetividade e postura profissional — sempre."]},
+  {d:9,k:"Padrão geral",t:"Quatro regras que não mudam",vis:"shield",pts:["Registrar tudo que importa no sistema ou controle.","Comunicar desvios imediatamente à gerência.","Nunca improvisar fora do padrão.","Em dúvida? Parar e acionar a liderança."]},
+  {d:9,k:"Abertura",t:"O dia começa sob controle",vis:"steps",pts:["Estrutura, sistemas, telefone, máquinas e materiais.","Agenda do dia: erros, sobreposições, encaixes.","Lista da vez de ontem: validar pendências."]},
+  {d:9,k:"Primeiro contato",t:"Receber é um serviço",vis:"heart",pts:["Sorriso, nome da cliente, confirmação do atendimento.","Água, café, chá e Wi-Fi.","Acompanhar até o profissional. Zelar na espera."]},
+  {d:9,k:"Telefone e WhatsApp",t:"Nenhuma conversa morre em aberto",vis:"chat",pts:["Saudação + Sala D'Oro + seu nome.","Entender antes de ofertar horário.","Follow-up D0, D1, D3, D5 e D7."]},
+  {d:9,k:"Cliente em espera",t:"Transparência antes da reclamação",vis:"clock",pts:["Informar motivo e tempo estimado, pedir desculpas.","Cronometrar e reposicionar antes do limite.","Espera aumentou? Explicar de novo e oferecer alternativa."]},
+  {d:7,k:"Fechamento",t:"A experiência termina no pagamento",vis:"check",pts:["Confirmar serviços antes de cobrar.","Perguntar se ficou feliz — insatisfação chama a gerência.","Nunca sair sem pagamento validado."]}]},
+ {id:"vativacoes",titulo:"Ativações · Relacionamento",sub:"A máquina que recupera e enche agenda",vis:"funnel",cenas:[
+  {d:7,k:"Matriz de Ativações",t:"Agenda cheia não é sorte. É método.",vis:"funnel",pts:["8 ações oficiais, cada uma com público, critério e dia certo."]},
+  {d:9,k:"Todo dia",t:"As duas diárias",vis:"chat",pts:["Sequência D0–D7: retomar conversas em aberto do dia 0 ao 7.","Pós-atendimento: cliente atendida ontem recebe contato hoje."]},
+  {d:9,k:"Ritmo da semana",t:"Terça e quinta são sagradas",vis:"calendar",pts:["Terça: ativação por serviço recorrente — janela de retorno.","Quinta: faltantes e canceladas — recuperar agenda perdida."]},
+  {d:10,k:"Mensais e especiais",t:"As quatro de ciclo longo",vis:"cycle",pts:["Clube D'Oro 30 dias: quinzenal, clientes no prazo.","Indica 3: as 180 melhores clientes indicam.","Inativas: alto valor sem visita há 45+ dias.","Aniversariantes: semana anterior à virada do mês."]},
+  {d:9,k:"Registro",t:"Cada tentativa vira dado",vis:"check",pts:["Tentativa, canal, resposta, próxima ação, resultado.","Sem horário ou profissional? Registrar o motivo.","Sexta: reporte com ativações, respostas e agendamentos."]},
+  {d:8,k:"Prova real",t:"Isso funciona.",vis:"chart",pts:["Num único mês: 577 clientes ativadas, 27 agendamentos gerados.","Constância vale mais que campanha."]}]},
+ {id:"vcomercial",titulo:"Comercial · Relacionamento",sub:"Revenda, cobrança e conversão sem fricção",vis:"chart",cenas:[
+  {d:7,k:"Comercial",t:"Vender bem é servir melhor.",vis:"logo",pts:["No alto padrão, a venda nasce da necessidade real da cliente."]},
+  {d:9,k:"Revenda",t:"A indicação vem primeiro",vis:"steps",pts:["Pergunte: algum produto foi indicado pelo profissional?","Sem indicação: entenda a necessidade antes de sugerir.","Deixe ver, tocar, conhecer a textura.","Combine acompanhar o resultado depois."]},
+  {d:9,k:"Cobrança",t:"O fechamento da experiência",vis:"check",pts:["Confirme os serviços antes de informar o valor.","Valor com discrição e clareza.","'Ficou feliz com o atendimento?' — antes de finalizar.","Insatisfação trava a cobrança até a gerência entrar."]},
+  {d:10,k:"Conversão D0–D7",t:"Lead sem resposta não é lead perdida",vis:"funnel",pts:["Filtrar em aberto, sem resposta, ação vencida.","Tentativa conforme a etapa: D0, D1, D3, D5, D7.","Interesse? Agendamento com data, horário e profissional.","Sem retorno até D7: encerrar com observação objetiva."]},
+  {d:8,k:"Regra de ouro",t:"Nenhum contato sem próxima ação.",vis:"shield",pts:["Todo impedimento vira registro. Todo registro vira gestão."]}]},
+ {id:"vcultura",titulo:"Cultura Sala D'Oro",sub:"O que permanece quando ninguém está olhando",vis:"logo",cenas:[
+  {d:8,k:"Identidade",t:"Sala D'Oro não é apenas uma marca.",vis:"logo",pts:["É uma forma de organizar percepção, decisão e execução.","Elegância sem afetação. Precisão sem dureza."]},
+  {d:8,k:"Propósito",t:"O padrão não depende de improviso.",vis:"shield",pts:["Organizar a experiência de trabalho para que o padrão não dependa de improviso individual.","A disciplina tem um porquê."]},
+  {d:9,k:"Cultura",t:"Cultura é comportamento sem supervisão.",vis:"heart",pts:["O conjunto de regras não negociáveis que orienta quando ninguém está explicando o óbvio.","É o que fica quando a supervisão sai do caminho."]},
+  {d:9,k:"Função",t:"Para que a cultura existe",vis:"steps",pts:["Proteger o padrão.","Reduzir ambiguidade.","Sustentar confiança entre pessoas.","Evitar que o improviso vire hábito."]},
+  {d:9,k:"Na prática",t:"Como ela se torna visível",vis:"check",pts:["Linguagem consistente. Postura estável.","Correção imediata de desvios.","Respeito à sequência de decisões."]},
+  {d:8,k:"Proteger",t:"Toda regra mantém o sistema confiável.",vis:"cycle",pts:["Liderar é proteger o padrão com critério e respeito.","Reconhecer é nomear o comportamento certo com precisão."]}]},
+ {id:"vcapilar",titulo:"Massagem Capilar no Lavatório",sub:"O padrão do momento mais lembrado da visita",vis:"hands",cenas:[
+  {d:7,k:"Lavatório",t:"O ponto alto silencioso da experiência.",vis:"hands",pts:["A cliente esquece a cor exata. Nunca esquece como se sentiu no lavatório."]},
+  {d:9,k:"Preparo",t:"Antes de a cliente chegar",vis:"steps",pts:["Lavatório, toalhas, produtos e apoio prontos.","Confirmar orientação do profissional responsável.","Temperatura da água: testar antes, perguntar sempre."]},
+  {d:10,k:"Técnica",t:"A massagem craniana padrão",vis:"circles",pts:["Polpas dos dedos, nunca as unhas.","Movimentos circulares: frontal → têmporas → topo → occipital (nuca).","Pressão firme e constante, sem pressa.","De 3 a 5 minutos, ritmo contínuo."]},
+  {d:9,k:"Conduta",t:"Conforto acima de tudo",vis:"heart",pts:["Silêncio confortável: a cliente conduz a conversa, não você.","Perguntar uma vez: 'A pressão está boa?'","Qualquer sensibilidade: avisar o profissional responsável."]},
+  {d:8,k:"Finalização",t:"Encerrar com o mesmo cuidado",vis:"check",pts:["Retirar o excesso de água com a toalha, sem esfregar.","Acomodar e conduzir à estação com atenção.","Estação limpa, materiais guardados."]}]},
+ {id:"vtrapezio",titulo:"Massagem de Trapézio na Cadeira",sub:"O novo diferencial do tempo de pausa",vis:"circles",cenas:[
+  {d:8,k:"Novo serviço",t:"A pausa química virou presente.",vis:"clock",pts:["Enquanto a coloração age, a cliente recebe um momento de cuidado — na própria cadeira."]},
+  {d:9,k:"Quando oferecer",t:"O momento certo",vis:"calendar",pts:["Durante a pausa de coloração, química ou tratamento.","Oferta discreta: 'Enquanto a cor age, posso fazer uma massagem rápida nos ombros?'","Sempre com consentimento — nunca tocar sem perguntar."]},
+  {d:10,k:"Técnica",t:"Trapézio e base do pescoço",vis:"circles",pts:["Mãos firmes sobre os ombros, amassamento suave do trapézio.","Polegares em círculos na base do pescoço.","Pressão média — perguntar: 'Está confortável?'","Cerca de 5 minutos, sem óleo, por cima da capa."]},
+  {d:9,k:"Cuidados",t:"Limites do serviço",vis:"shield",pts:["Não massagear coluna, pontos de dor aguda ou lesão relatada.","Dor, gestação ou restrição médica: não executar e registrar.","Movimentos lentos: é relaxamento, não fisioterapia."]},
+  {d:8,k:"Fechamento",t:"Diferencial registrado",vis:"check",pts:["Encerrar suavemente e informar: 'Prontinho, agora a cor termina de agir.'","Registrar o serviço na comanda como cortesia da pausa.","É isso que transforma espera em memória."]}]}
+];
+function visSVG(tipo){
+  const G="#C9A84C",G2="#E8D5A3";
+  switch(tipo){
+    case"logo":return`<svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="46" fill="none" stroke="${G}" stroke-width="1.5" class="vsp" stroke-dasharray="6 10"/><circle cx="60" cy="60" r="30" fill="none" stroke="${G2}" stroke-width="1" opacity=".5"/><text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="34" fill="${G2}">D</text></svg>`;
+    case"modules":return`<svg viewBox="0 0 160 110">${[[10,10],[85,10],[10,60],[85,60]].map((c,i)=>`<rect x="${c[0]}" y="${c[1]}" width="65" height="40" rx="10" fill="none" stroke="${G}" stroke-width="1.5" class="vfl" style="animation-delay:${i*.4}s"/>`).join("")}</svg>`;
+    case"steps":return`<svg viewBox="0 0 160 110">${[0,1,2].map(i=>`<circle cx="${30+i*50}" cy="55" r="13" fill="none" stroke="${G}" stroke-width="2" class="vp1" style="animation-delay:${i*.5}s"/><text x="${30+i*50}" y="60" text-anchor="middle" font-size="12" fill="${G2}">${i+1}</text>`).join("")}<line x1="43" y1="55" x2="67" y2="55" stroke="${G}" stroke-width="1.5" class="vdr"/><line x1="93" y1="55" x2="117" y2="55" stroke="${G}" stroke-width="1.5" class="vdr"/></svg>`;
+    case"search":return`<svg viewBox="0 0 120 110"><circle cx="52" cy="48" r="26" fill="none" stroke="${G}" stroke-width="3" class="vp1"/><line x1="72" y1="68" x2="94" y2="90" stroke="${G}" stroke-width="4" stroke-linecap="round" class="vdr"/></svg>`;
+    case"calendar":return`<svg viewBox="0 0 130 110"><rect x="15" y="20" width="100" height="76" rx="12" fill="none" stroke="${G}" stroke-width="2"/><line x1="15" y1="42" x2="115" y2="42" stroke="${G}" stroke-width="1.5"/>${[[35,58],[65,58],[95,58],[35,78],[65,78]].map((c,i)=>`<circle cx="${c[0]}" cy="${c[1]}" r="5" fill="${i===2?G:"none"}" stroke="${G}" stroke-width="1.2" class="${i===2?"vp1":""}"/>`).join("")}</svg>`;
+    case"cycle":return`<svg viewBox="0 0 120 110"><g class="vsp"><circle cx="60" cy="55" r="36" fill="none" stroke="${G}" stroke-width="1.6" stroke-dasharray="10 8"/>${[0,90,180,270].map(a=>`<circle cx="${60+36*Math.cos(a*Math.PI/180)}" cy="${55+36*Math.sin(a*Math.PI/180)}" r="7" fill="#17150F" stroke="${G2}" stroke-width="1.6"/>`).join("")}</g><text x="60" y="60" text-anchor="middle" font-size="16" fill="${G2}">★</text></svg>`;
+    case"shield":return`<svg viewBox="0 0 110 110"><path d="M55 12 L92 26 V58 C92 80 76 94 55 100 C34 94 18 80 18 58 V26 Z" fill="none" stroke="${G}" stroke-width="2" class="vp1"/><path d="M40 55 L51 66 L72 44" fill="none" stroke="${G2}" stroke-width="3" stroke-linecap="round" class="vdr"/></svg>`;
+    case"heart":return`<svg viewBox="0 0 120 110"><path d="M60 92 C30 70 16 52 22 36 C27 22 46 20 60 36 C74 20 93 22 98 36 C104 52 90 70 60 92 Z" fill="none" stroke="${G}" stroke-width="2" class="vp1"/></svg>`;
+    case"chat":return`<svg viewBox="0 0 130 110"><rect x="12" y="18" width="70" height="42" rx="14" fill="none" stroke="${G}" stroke-width="2" class="vfl"/><rect x="50" y="52" width="68" height="40" rx="14" fill="none" stroke="${G2}" stroke-width="1.6" class="vfl" style="animation-delay:.6s"/>${[30,46,62].map((x,i)=>`<circle cx="${x}" cy="39" r="3" fill="${G}" class="vp1" style="animation-delay:${i*.3}s"/>`).join("")}</svg>`;
+    case"clock":return`<svg viewBox="0 0 110 110"><circle cx="55" cy="55" r="40" fill="none" stroke="${G}" stroke-width="2"/><line x1="55" y1="55" x2="55" y2="28" stroke="${G2}" stroke-width="3" stroke-linecap="round" class="vsp" style="transform-origin:55px 55px;animation-duration:8s"/><line x1="55" y1="55" x2="74" y2="55" stroke="${G}" stroke-width="2.4" stroke-linecap="round"/></svg>`;
+    case"check":return`<svg viewBox="0 0 110 110"><circle cx="55" cy="55" r="40" fill="none" stroke="${G}" stroke-width="2" class="vp1"/><path d="M36 56 L50 70 L78 40" fill="none" stroke="${G2}" stroke-width="4" stroke-linecap="round" class="vdr"/></svg>`;
+    case"funnel":return`<svg viewBox="0 0 130 110"><path d="M15 18 H115 L80 58 V88 L50 98 V58 Z" fill="none" stroke="${G}" stroke-width="2" class="vp1"/>${[0,1,2].map(i=>`<circle cx="${40+i*25}" cy="10" r="3.4" fill="${G2}" class="vfl" style="animation-delay:${i*.4}s"/>`).join("")}</svg>`;
+    case"chart":return`<svg viewBox="0 0 130 110">${[[20,70,26],[52,50,46],[84,28,68]].map((b,i)=>`<rect x="${b[0]}" y="${b[1]}" width="20" height="${b[2]}" rx="5" fill="none" stroke="${G}" stroke-width="2" class="vfl" style="animation-delay:${i*.35}s"/>`).join("")}<path d="M22 60 L60 42 L94 20" fill="none" stroke="${G2}" stroke-width="2" stroke-linecap="round" class="vdr"/></svg>`;
+    case"circles":return`<svg viewBox="0 0 130 110">${[[45,45],[85,45],[65,70]].map((c,i)=>`<g class="vp1" style="animation-delay:${i*.5}s"><circle cx="${c[0]}" cy="${c[1]}" r="16" fill="none" stroke="${G}" stroke-width="1.6"/><circle cx="${c[0]}" cy="${c[1]}" r="7" fill="none" stroke="${G2}" stroke-width="1.2"/></g>`).join("")}</svg>`;
+    case"hands":return`<svg viewBox="0 0 130 110"><path d="M30 78 C24 60 30 40 46 32 C64 22 88 26 98 42 C106 56 102 74 90 82" fill="none" stroke="${G}" stroke-width="2" class="vp1"/>${[[48,52],[64,44],[80,50]].map((c,i)=>`<circle cx="${c[0]}" cy="${c[1]}" r="5" fill="none" stroke="${G2}" stroke-width="1.6" class="vp1" style="animation-delay:${i*.4}s"/>`).join("")}</svg>`;
+    default:return"";
+  }
+}
+function videoDur(v){return v.cenas.reduce((a,c)=>a+c.d,0)}
+function renderVideos(){
+  if(!DB.videosVistos)DB.videosVistos={};
+  return `
+  <section class="card section">
+    <h2>Vídeos de treinamento</h2>
+    <div class="muted" style="font-size:.86rem;line-height:1.5">Mini-aulas animadas baseadas nos POPs oficiais e no núcleo cultural. Toque para assistir — a cena pausa quando você tocar na tela.</div>
+  </section>
+  <div class="vcards">
+    ${VIDEOS.map(v=>`<button class="vcard" onclick="playVideo('${v.id}')">
+      <span class="vk">${DB.videosVistos[v.id]?"✓ Assistido":"Vídeo · "+videoDur(v)+"s"}</span>
+      <strong>${esc(v.titulo)}</strong>
+      <span>${esc(v.sub)}</span>
+      <span class="vmeta"><span style="color:#9B907D;font-size:.75rem">${v.cenas.length} cenas</span><span class="vplay">▶</span></span>
+    </button>`).join("")}
+  </div>`;
+}
+let VP=null;
+function playVideo(id){
+  const v=VIDEOS.find(x=>x.id===id);if(!v)return;
+  VP={v,cena:0,t0:Date.now(),pausado:false,acum:0,fim:false};
+  document.getElementById("vplayer").classList.add("open");
+  vRenderScene();
+  if(VP.timer)clearInterval(VP.timer);
+  VP.timer=setInterval(vTick,100);
+}
+function vElapsed(){return VP.pausado?VP.acum:VP.acum+(Date.now()-VP.t0)/1000}
+function vTick(){
+  if(!VP||VP.pausado||VP.fim)return;
+  const dur=VP.v.cenas[VP.cena].d;
+  const e=vElapsed();
+  const seg=document.querySelector(`#vprog i:nth-child(${VP.cena+1}) b`);
+  if(seg)seg.style.width=Math.min(100,e/dur*100)+"%";
+  if(e>=dur)vNext();
+}
+function vGoto(i){
+  VP.cena=i;VP.acum=0;VP.t0=Date.now();VP.fim=false;
+  vRenderScene();
+}
+function vNext(){
+  if(VP.cena<VP.v.cenas.length-1)vGoto(VP.cena+1);
+  else{VP.fim=true;DB.videosVistos=DB.videosVistos||{};DB.videosVistos[VP.v.id]=nowBR();save();vRenderScene()}
+}
+function vPrev(){if(VP.cena>0)vGoto(VP.cena-1);else vGoto(0)}
+function vPause(){
+  if(VP.fim)return;
+  if(VP.pausado){VP.t0=Date.now();VP.pausado=false}
+  else{VP.acum=vElapsed();VP.pausado=true}
+  document.getElementById("vpausebtn").textContent=VP.pausado?"▶":"⏸";
+}
+function closeVideo(){
+  if(VP&&VP.timer)clearInterval(VP.timer);
+  VP=null;
+  document.getElementById("vplayer").classList.remove("open");
+  render();
+}
+function vRenderScene(){
+  const v=VP.v,c=v.cenas[VP.cena];
+  const prog=v.cenas.map((_,i)=>`<i><b style="width:${i<VP.cena?100:0}%"></b></i>`).join("");
+  const stage=VP.fim
+    ?`<div class="vinner">
+        <div class="vvis">${visSVG("check")}</div>
+        <div class="vkick">Concluído</div>
+        <h3 class="vtitle">${esc(v.titulo)}</h3>
+        <div class="vlines"><div class="vline" style="animation-delay:.2s">Assistido até o fim. Bom trabalho.</div></div>
+      </div>`
+    :`<div class="vinner" key="${VP.cena}">
+        <div class="vvis">${visSVG(c.vis)}</div>
+        <div class="vkick">${esc(c.k)}</div>
+        <h3 class="vtitle">${esc(c.t)}</h3>
+        <div class="vlines">${c.pts.map((p,i)=>`<div class="vline" style="animation-delay:${.5+i*.9}s">${esc(p)}</div>`).join("")}</div>
+      </div>`;
+  document.getElementById("vplayer").innerHTML=`
+    <div class="vtop"><span class="vt">${esc(v.titulo)}</span><button class="vclose" onclick="closeVideo()">Fechar ✕</button></div>
+    <div class="vprog" id="vprog">${prog}</div>
+    <div class="vstage" onclick="vPause()">${stage}</div>
+    <div class="vfoot">
+      <button class="vbtn" onclick="vPrev()">⟨</button>
+      ${VP.fim?`<button class="vbtn gold" onclick="vGoto(0)">Rever</button><button class="vbtn" onclick="closeVideo()">Fechar</button>`
+             :`<button class="vbtn gold" id="vpausebtn" onclick="vPause()">${VP.pausado?"▶":"⏸"}</button><button class="vbtn" onclick="vNext()">⟩</button>`}
+    </div>`;
 }
 
 /* ============ MODAL ============ */
