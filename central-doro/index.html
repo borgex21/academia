@@ -747,19 +747,21 @@ const DIARIAS = [
   {id:"dia_confirma", t:"Confirmar agenda do dia seguinte", d:"Garantir presença de amanhã."}
 ];
 /* Cronograma semanal: só o que é extra ao dia a dia fixo. Domingo fechado.
-   Progressão de energia: a semana sobe de ritmo até o pico de sábado. */
+   Progressão simbólica: o capricho na apresentação pessoal de cada treinada sobe
+   ao longo da semana, com um salto na sexta e sábado, até o ápice de sábado
+   com a equipe toda produzidíssima. */
 const CRONOGRAMA = {
   1:{dia:"Segunda", foco:"Abrir a semana com clareza", energia:"Largada", extras:[
     {id:"seg_semana", t:"Conferir agenda da semana", d:"Visão geral de encaixes e horários críticos dos próximos dias."}]},
-  2:{dia:"Terça", foco:"Recuperação de agenda", energia:"Ativação em foco", extras:[]},
-  3:{dia:"Quarta", foco:"Organização e padrão visual", energia:"Ajuste fino", extras:[
+  2:{dia:"Terça", foco:"Recuperação de agenda", energia:"Ritmo sobe", extras:[]},
+  3:{dia:"Quarta", foco:"Organização e padrão visual", energia:"Capricho em alta", extras:[
     {id:"qua_vitrine", t:"Limpeza das vitrines", d:"Organização visual e padrão do salão."},
     {id:"qua_estoque", t:"Inventário de revenda", d:"Contagem e ajuste de estoque."}]},
-  4:{dia:"Quinta", foco:"Lembretes de retorno por serviço", energia:"Produção em alta", extras:[]},
-  5:{dia:"Sexta", foco:"Preparar o fim de semana", energia:"Aquecendo o salto", extras:[
+  4:{dia:"Quinta", foco:"Lembretes de retorno por serviço", energia:"Presença afiada", extras:[]},
+  5:{dia:"Sexta", foco:"Começa o salto de produção", energia:"O salto começa aqui", extras:[
     {id:"sex_fechamento", t:"Fechar ocorrências da semana", d:"Organizar o que ficou aberto antes do sábado."},
-    {id:"sex_vitrine", t:"Preparar loja e vitrine", d:"Equipe arruma o salão para o pico de sábado."}]},
-  6:{dia:"Sábado", foco:"Ápice da semana, ritmo máximo de atendimento", energia:"Pico criativo", extras:[
+    {id:"sex_apresentacao", t:"Reforçar capricho na apresentação pessoal", d:"Início do salto que chega ao ápice no sábado."}]},
+  6:{dia:"Sábado", foco:"Ápice da semana: equipe toda produzidíssima, ritmo máximo de atendimento", energia:"Pico criativo", extras:[
     {id:"sab_reflexo", t:"Recomendar Reflexo", d:"Tratamento indicado para este período, reforçar na consulta com a cliente."}]}
 };
 
@@ -1112,7 +1114,7 @@ function renderProcedimentos(){
 /* Liberação por nível: cada tarefa/ativação só pode ser registrada depois
    que o nível correspondente da trilha estiver 100% concluído. */
 const TASK_NIVEL={
-  dia_agenda:"n1", dia_ausencias:"n1", dia_ocorrencias:"n1", seg_semana:"n1", qua_vitrine:"n1", qua_estoque:"n1", sex_fechamento:"n1", sex_vitrine:"n1",
+  dia_agenda:"n1", dia_ausencias:"n1", dia_ocorrencias:"n1", seg_semana:"n1", qua_vitrine:"n1", qua_estoque:"n1", sex_fechamento:"n1", sex_apresentacao:"n1",
   dia_whats:"n2", dia_confirma:"n2",
   dia_vez:"n3",
   dia_followup:"n5", dia_ativacoes:"n5", dia_noshow:"n5", sab_reflexo:"n5"
