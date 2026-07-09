@@ -368,6 +368,13 @@ const POPS = [
     "Em caso de encaixe, validar com o profissional e garantir que não comprometa outra cliente.",
     "Confirmar data, horário, serviço, profissional e unidade antes de finalizar.",
     "Registrar origem da preferência quando cliente nova pedir profissional específico."]},
+  {id:"encaixe", title:"Protocolo de Encaixe de Clientes", group:"Agenda", setor:"Recepção", steps:[
+    "Sempre oferecer primeiro os horários já disponíveis na agenda, antes de consultar qualquer profissional.",
+    "Ex.: 'Temos disponibilidade na terça às 14h ou na quarta às 10h. Algum desses funciona para você?'",
+    "Se a cliente só puder em horário fora da agenda, não confirmar por conta própria: informar que vai verificar com o profissional e retornar em instantes.",
+    "Consultar o profissional e aguardar a autorização explícita antes de qualquer confirmação.",
+    "Após autorização, confirmar com a cliente e registrar no sistema que o encaixe foi autorizado pelo profissional, garantindo rastreabilidade.",
+    "Sem autorização do profissional, sem confirmação. Sempre."]},
   {id:"cadastro", title:"Cadastro de Cliente", group:"Agenda", setor:"Recepção", steps:[
     "Solicitar nome completo, telefone, data de aniversário e informações essenciais com gentileza.",
     "Perguntar se deseja informar e-mail e CPF para emissão de nota fiscal.",
@@ -807,12 +814,13 @@ const TRILHA = [
       quiz:{q:"Uma cliente quis agendar mas não havia horário disponível. Ela não insistiu depois. Isso entra no reporte semanal?", opts:["Só entra se ela insistir mais de uma vez, mostrando interesse real","Sim, entra como perda por indisponibilidade, com o motivo registrado para análise da gerência","Não entra, porque sem agendamento fechado não há o que reportar"], correct:1, exp:"A perda por indisponibilidade é dado de gestão independente de insistência da cliente: mostra demanda reprimida e orienta ajustes de agenda."}}]}
 ];
 
-/* Lista da vez: categorias e regras do Motor de Distribuição */
+/* Lista da vez: categorias e regras do Motor de Distribuição (equipe real, unidade Alphaville) */
 const VEZ_DEFAULT_CATS = [
-  {id:"cab", name:"Cabeleireiros", profs:["Ana","Bianca","Carla","Dani","Elisa"]},
-  {id:"man", name:"Manicures", profs:["Alice","Bruna","Camila","Débora"]},
-  {id:"dep", name:"Depilação", profs:["Paula","Renata"]},
-  {id:"sob", name:"Sobrancelha / Make", profs:["Taís","Vera"]}
+  {id:"cab", name:"Cabeleireiros", profs:["Alan","Amorim","Cidinha","Claudinha","Cley","Colli","Dani","Enrique","Guilherme","Henrique","Iara","Jeová","Marcelo","Netto","Taina"]},
+  {id:"man", name:"Manicures", profs:["Andressa","Day","Elza","Elizangela","Andrea","Fátima Barbosa","Fátima Mota","Maria","Selma","Sheila"]},
+  {id:"gel", name:"Unha em Gel", profs:["Apollo","Marta","Lays"]},
+  {id:"dep", name:"Depilação", profs:["Fátima Barbosa","Fátima Mota","Andrea"]},
+  {id:"sob", name:"Sobrancelha / Make", profs:["Andressa","Fran","Kassio"]}
 ];
 
 /* ============ ESTADO ============ */
