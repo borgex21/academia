@@ -831,12 +831,16 @@ function nowBR(){return new Date().toLocaleString("pt-BR",{dateStyle:"short",tim
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
 function esc(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
 
+const VEZ_FILAS=[["imediato","Atendimento Imediato"],["futuro","Agendamento Futuro"]];
+function freshFila(profs){
+  return {pointer:0,day:todayBR(),
+    statuses:Object.fromEntries(profs.map(n=>[n,"present"])),
+    counts:Object.fromEntries(profs.map(n=>[n,0]))};
+}
 function freshVezState(){
   const st={};
   VEZ_DEFAULT_CATS.forEach(c=>{
-    st[c.id]={pointer:0,day:todayBR(),
-      statuses:Object.fromEntries(c.profs.map(n=>[n,"present"])),
-      counts:Object.fromEntries(c.profs.map(n=>[n,0]))};
+    st[c.id]={imediato:freshFila(c.profs), futuro:freshFila(c.profs)};
   });
   return st;
 }
@@ -855,24 +859,24 @@ function load(){
 let DB=load();
 function save(){localStorage.setItem(KEY,JSON.stringify(DB))}
 
-/* reset diário de presença na lista da vez */
+/* reset diário de presença na lista da vez, por categoria e por fila */
 function normalizeVez(){
   DB.vez.cats.forEach(c=>{
-    if(!DB.vez.state[c.id]){
-      DB.vez.state[c.id]={pointer:0,day:todayBR(),
-        statuses:Object.fromEntries(c.profs.map(n=>[n,"present"])),
-        counts:Object.fromEntries(c.profs.map(n=>[n,0]))};
+    if(!DB.vez.state[c.id]||!DB.vez.state[c.id].imediato||!DB.vez.state[c.id].futuro){
+      DB.vez.state[c.id]={imediato:freshFila(c.profs), futuro:freshFila(c.profs)};
     }
-    const s=DB.vez.state[c.id];
-    if(s.day!==todayBR()){
-      s.statuses=Object.fromEntries(c.profs.map(n=>[n,"present"]));
-      s.day=todayBR();
-    }
-    c.profs.forEach(n=>{
-      if(!s.statuses[n])s.statuses[n]="present";
-      if(s.counts[n]===undefined)s.counts[n]=0;
+    VEZ_FILAS.forEach(([fid])=>{
+      const s=DB.vez.state[c.id][fid];
+      if(s.day!==todayBR()){
+        s.statuses=Object.fromEntries(c.profs.map(n=>[n,"present"]));
+        s.day=todayBR();
+      }
+      c.profs.forEach(n=>{
+        if(!s.statuses[n])s.statuses[n]="present";
+        if(s.counts[n]===undefined)s.counts[n]=0;
+      });
+      s.pointer=Math.min(s.pointer||0,Math.max(0,c.profs.length-1));
     });
-    s.pointer=Math.min(s.pointer||0,Math.max(0,c.profs.length-1));
   });
 }
 
@@ -889,6 +893,7 @@ let subTarefas="hoje";
 let buscaQuery="";
 let procSetor="Todos";
 let vezView="vez";
+let vezFila="imediato";
 
 function setView(v){DB.view=v;missaoAberta=null;quizEstado=null;save();render()}
 
@@ -1291,7 +1296,7 @@ function registrar(itemId,titulo,tipo){
 
 /* ============ LISTA DA VEZ ============ */
 function vezCat(){return DB.vez.cats.find(c=>c.id===DB.vez.catAtual)||DB.vez.cats[0]}
-function vezSt(){return DB.vez.state[vezCat().id]}
+function vezSt(){return DB.vez.state[vezCat().id][vezFila]}
 function stLabel(s){return s==="present"?"Presente":s==="absent"?"Ausente":"Ocupada"}
 function stPill(s){return s==="present"?"good":s==="absent"?"danger":"warn"}
 function firstAvailable(){
@@ -1313,16 +1318,23 @@ function ordemVisivel(){
   return arr;
 }
 function vezLog(tipo,detalhe){
-  DB.vez.log.unshift({id:uid(),tipo,at:nowBR(),cat:DB.vez.catAtual,...detalhe});
+  DB.vez.log.unshift({id:uid(),tipo,at:nowBR(),cat:DB.vez.catAtual,fila:vezFila,...detalhe});
   DB.vez.log=DB.vez.log.slice(0,400);
+}
+function passarVez(){
+  const nome=daVez();
+  if(!nome)return;
+  setStatusProf(nome,"occupied");
 }
 function renderVez(){
   const c=vezCat(),s=vezSt(),atual=daVez();
   const catTabs=DB.vez.cats.map(cat=>{
-    const st=DB.vez.state[cat.id];
+    const st=DB.vez.state[cat.id][vezFila];
     const pres=cat.profs.filter(n=>st.statuses[n]==="present").length;
     return `<button class="subtab ${DB.vez.catAtual===cat.id?"on":""}" onclick="DB.vez.catAtual='${cat.id}';save();render()">${esc(cat.name)} · ${pres}</button>`;
   }).join("");
+  const filaTabs=VEZ_FILAS.map(([id,l])=>
+    `<button class="subtab ${vezFila===id?"on":""}" onclick="vezFila='${id}';render()">${l}</button>`).join("");
   const viewTabs=[["vez","Da vez"],["presenca","Presença"],["historico","Histórico"],["config","Config"]].map(([id,l])=>
     `<button class="subtab ${vezView===id?"on":""}" onclick="vezView='${id}';render()">${l}</button>`).join("");
 
@@ -1346,13 +1358,12 @@ function renderVez(){
         <h2>Interpretação da regra</h2>
         <div class="notice"><strong>Ausente:</strong> sai da distribuição e perde as oportunidades do período. Ao voltar, retorna à ordem estrutural e aguarda o marcador alcançá-la.</div>
         <div class="notice"><strong>Ocupada:</strong> mantém a posição. O sistema pula temporariamente e, quando liberada, volta a ser elegível no ponto em que estiver.</div>
-        <div class="notice"><strong>Preferência:</strong> registrada, mas não consome a vez do rodízio.</div>
       </section>
     </div>`;
   } else if(vezView==="historico"){
-    const items=DB.vez.log.filter(e=>e.cat===DB.vez.catAtual).slice(0,100);
+    const items=DB.vez.log.filter(e=>e.cat===DB.vez.catAtual&&e.fila===vezFila).slice(0,100);
     body=`<section class="card section">
-      <h2>Histórico: ${esc(c.name)}</h2>
+      <h2>Histórico: ${esc(c.name)} · ${esc(VEZ_FILAS.find(([id])=>id===vezFila)[1])}</h2>
       <div class="list">
       ${items.length?items.map(e=>`<div class="item">
         <div class="toprow"><h4>${esc(e.texto||e.tipo)}</h4><span class="muted" style="font-size:.78rem">${esc(e.at)}</span></div>
@@ -1373,9 +1384,9 @@ function renderVez(){
       </section>
       <section class="card section">
         <h2>Manutenção</h2>
-        <div class="notice">Os dados ficam salvos neste dispositivo (localStorage). Presença reseta automaticamente a cada dia; contadores e marcador são mantidos.</div>
+        <div class="notice">Os dados ficam salvos neste dispositivo (localStorage). Presença reseta automaticamente a cada dia; contadores e marcador são mantidos. Atendimento Imediato e Agendamento Futuro têm marcador, presença e contadores independentes.</div>
         <div class="btnrow" style="display:flex;gap:8px;flex-wrap:wrap">
-          <button class="btn secondary small" onclick="resetCategoria()">Resetar categoria</button>
+          <button class="btn secondary small" onclick="resetCategoria()">Resetar fila atual (${esc(VEZ_FILAS.find(([id])=>id===vezFila)[1])})</button>
         </div>
       </section>
     </div>`;
@@ -1393,8 +1404,8 @@ function renderVez(){
           </div>
           <div class="list" style="margin-top:16px">
             <button class="btn" ${!atual?"disabled":""} onclick="abrirAtendimento()">Registrar atendimento da vez →</button>
+            <button class="btn secondary" ${!atual?"disabled":""} onclick="passarVez()">Ocupado, passar a vez →</button>
           </div>
-          <div class="muted" style="font-size:.8rem;margin-top:8px">Preferência de cliente por profissional é controlada na agenda, não neste app.</div>
         </section>
       </section>
       <section class="card section">
@@ -1408,7 +1419,7 @@ function renderVez(){
     </div>`;
   }
 
-  return `<div class="subtabs">${catTabs}</div><div class="subtabs">${viewTabs}</div>${body}`;
+  return `<div class="subtabs">${catTabs}</div><div class="subtabs">${filaTabs}</div><div class="subtabs">${viewTabs}</div>${body}`;
 }
 function setStatusProf(nome,status){
   const s=vezSt(),prev=s.statuses[nome];
@@ -1444,26 +1455,30 @@ function addProf(){
   const c=vezCat();
   if(c.profs.includes(nome))return alert("Já existe nesta categoria.");
   c.profs.push(nome);
-  vezSt().statuses[nome]="present";vezSt().counts[nome]=0;
+  VEZ_FILAS.forEach(([fid])=>{
+    const st=DB.vez.state[c.id][fid];
+    st.statuses[nome]="present";st.counts[nome]=0;
+  });
   vezLog("add",{prof:nome,texto:`${nome} adicionada em ${c.name}`});
   save();render();
 }
 function removeProf(nome){
   if(!confirm(`Remover ${nome}?`))return;
-  const c=vezCat(),s=vezSt();
+  const c=vezCat();
   c.profs=c.profs.filter(n=>n!==nome);
-  delete s.statuses[nome];delete s.counts[nome];
-  if(s.pointer>=c.profs.length)s.pointer=0;
+  VEZ_FILAS.forEach(([fid])=>{
+    const st=DB.vez.state[c.id][fid];
+    delete st.statuses[nome];delete st.counts[nome];
+    if(st.pointer>=c.profs.length)st.pointer=0;
+  });
   vezLog("remove",{prof:nome,texto:`${nome} removida de ${c.name}`});
   save();render();
 }
 function resetCategoria(){
-  if(!confirm("Resetar presença, contadores e marcador desta categoria?"))return;
+  if(!confirm("Resetar presença, contadores e marcador desta fila?"))return;
   const c=vezCat();
-  DB.vez.state[c.id]={pointer:0,day:todayBR(),
-    statuses:Object.fromEntries(c.profs.map(n=>[n,"present"])),
-    counts:Object.fromEntries(c.profs.map(n=>[n,0]))};
-  vezLog("reset",{texto:`Categoria ${c.name} resetada`});
+  DB.vez.state[c.id][vezFila]=freshFila(c.profs);
+  vezLog("reset",{texto:`Categoria ${c.name} resetada (${VEZ_FILAS.find(([id])=>id===vezFila)[1]})`});
   save();render();
 }
 
