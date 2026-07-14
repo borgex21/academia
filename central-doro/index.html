@@ -82,8 +82,11 @@ button{cursor:pointer}
   backdrop-filter:blur(28px) saturate(180%);-webkit-backdrop-filter:blur(28px) saturate(180%);
   border-radius:var(--radius);box-shadow:var(--shadow), inset 0 1px rgba(255,255,255,.6);
 }
-.section{padding:20px;margin-bottom:14px}
-.section h2{margin:0 0 12px;font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.section{padding:20px;margin-bottom:20px}
+.section h2{margin:0 0 14px;font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.section:not(:last-child){border-bottom:3px solid rgba(13,148,136,.08);padding-bottom:28px;margin-bottom:28px}
+.sequence-step{display:grid;gap:4px;margin-bottom:6px;position:relative;padding-left:20px}
+.sequence-step:before{content:attr(data-num);position:absolute;left:0;width:16px;height:16px;background:rgba(13,148,136,.14);border-radius:50%;display:grid;place-items:center;font-size:.7rem;font-weight:800;color:var(--accent-ink)}
 .grid2{display:grid;grid-template-columns:1.1fr .9fr;gap:14px}
 .muted{color:var(--muted)}
 .eyebrow{
@@ -909,7 +912,7 @@ function load(){
     if(raw) return JSON.parse(raw);
   }catch{}
   return {
-    user:"", view:"aprender",
+    user:"", view:"painel",
     training:{done:{}},
     execucoes:[],           // registros de tarefas/ativações
     vez:{cats:structuredClone(VEZ_DEFAULT_CATS), state:freshVezState(), catAtual:"cab", log:[]}
@@ -941,8 +944,8 @@ function normalizeVez(){
 
 /* ============ NAVEGAÇÃO ============ */
 const VIEWS=[
-  ["aprender","Treinamentos"],["procedimentos","Procedimentos"],
-  ["painel","Painel"],["vez","Lista da Vez"]
+  ["painel","Painel"],["aprender","Treinamentos"],
+  ["procedimentos","Google dos Procedimentos"],["vez","Lista da Vez"]
 ];
 let missaoAberta=null;
 let quizEstado=null;
@@ -1012,13 +1015,13 @@ const SETORES_APRENDER=[
 ];
 function renderAprender(){
   if(missaoAberta) return renderMissao();
-  const setorPicker=`<div class="subtabs">${SETORES_APRENDER.map(s=>`<button class="subtab ${setorAprender===s.id?"on":""}" onclick="setorAprender='${s.id}';render()">${esc(s.nome)}</button>`).join("")}</div>`;
+  const setorPicker=`<div class="subtabs" style="margin-bottom:14px;border-bottom:2px solid rgba(13,148,136,.08);padding-bottom:12px">${SETORES_APRENDER.map(s=>`<button class="subtab ${setorAprender===s.id?"on":""}" onclick="setorAprender='${s.id}';render()" style="font-weight:700">${esc(s.nome)}</button>`).join("")}</div>`;
   if(setorAprender==="cab_jr") return setorPicker+renderSetorCabeleireiroJr();
-  const tabs=[["videos","Vídeos"],["trilha","Trilha"]];
+  const tabs=[["videos","📹 Vídeos de aprendizado"],["trilha","🎯 Sua trilha de formação"]];
   const body = subAprender==="trilha" ? renderTrilha() : renderVideos();
   return `${setorPicker}
-  <div class="subtabs">
-    ${tabs.map(([id,l])=>`<button class="subtab ${subAprender===id?"on":""}" onclick="subAprender='${id}';render()">${l}</button>`).join("")}
+  <div class="subtabs" style="margin-bottom:16px;border-bottom:2px solid rgba(13,148,136,.08);padding-bottom:14px">
+    ${tabs.map(([id,l])=>`<button class="subtab ${subAprender===id?"on":""}" onclick="subAprender='${id}';render()" style="font-weight:700">${l}</button>`).join("")}
   </div>
   ${body}`;
 }
@@ -1062,9 +1065,9 @@ function renderTrilha(){
   let unlocked=true;
   return `
   <section class="card section">
-    <h2>Trilha de formação</h2>
+    <h2>Sua trilha de formação</h2>
+    <div class="muted" style="font-size:.86rem;margin-bottom:14px">Complete cada nível na sequência abaixo. Você está nos <span class="mono" style="color:var(--accent-ink);font-weight:700">${t.done}/${t.total}</span> passos.</div>
     <div class="progressline"><span style="width:${t.pct}%"></span></div>
-    <div class="muted" style="font-size:.86rem"><span class="mono">${t.done}/${t.total}</span> missões · complete um nível para liberar o próximo</div>
   </section>
   <div class="levels">
   ${TRILHA.map((nivel,i)=>{
@@ -1074,8 +1077,9 @@ function renderTrilha(){
     const isCurrent=thisUnlocked&&pct<100;
     if(doneCount<nivel.missoes.length) unlocked=false;
     return `<section class="card level ${isCurrent?"current":""} ${thisUnlocked?"":"locked"}">
-      <div class="levelhead">
-        <strong>${esc(nivel.nome)}</strong>
+      <div class="levelhead" style="display:flex;align-items:center;gap:10px">
+        <div style="min-width:28px;height:28px;background:rgba(13,148,136,.14);border-radius:50%;display:grid;place-items:center;font-weight:800;color:var(--accent-ink);font-size:.85rem">${i+1}</div>
+        <strong style="flex:1">${esc(nivel.nome)}</strong>
         ${pct===100?`<span class="pill good">Concluído</span>`:thisUnlocked?`<span class="pill gold mono">${pct}%</span>`:`<span class="pill neutral">🔒 Bloqueado</span>`}
       </div>
       <div class="muted" style="font-size:.86rem;margin-bottom:4px">${esc(nivel.desc)}</div>
@@ -1207,8 +1211,8 @@ function nivelCompleto(id){
 function nivelNome(id){return TRILHA.find(x=>x.id===id)?.nome.replace(/^Nível \d+ · /,"")||id}
 function lockedCta(nivelId){
   return `<div class="btnrow">
-    <span class="pill neutral">🔒 Libera com ${esc(nivelNome(nivelId))}</span>
-    <button class="btn secondary small" onclick="DB.view='aprender';subAprender='trilha';save();render()">Ir treinar</button>
+    <span class="pill neutral">🔒 Desbloqueado com: ${esc(nivelNome(nivelId))}</span>
+    <button class="btn small" onclick="DB.view='aprender';subAprender='trilha';save();render()" style="background:linear-gradient(135deg,var(--accent),var(--accent-2));border:none;color:#fff">🎯 Ir para trilha</button>
   </div>`;
 }
 function tarefasDoDia(dow){
@@ -1278,7 +1282,7 @@ function renderPainel(){
             return `<div class="item ${liberado?"":"locked"}">
               <div class="toprow"><h4>${esc(a.nome)}</h4><span class="pill ${a.freq==="Diário"?"good":a.freq==="Semanal"?"warn":"neutral"}">${esc(a.freq)}</span></div>
               <div class="meta"><strong>Público:</strong> ${esc(a.publico)}<br><strong>Dia:</strong> ${esc(a.dia)}<br><strong>Critério:</strong> ${esc(a.criterio)}</div>
-              ${liberado?`<div class="btnrow"><button class="btn secondary small" onclick="registrar('${a.id}','${esc(a.nome)}','ativacao')">Registrar execução</button></div>`:lockedCta(ATIVACAO_NIVEL)}
+              ${liberado?`<div class="btnrow"><button class="btn small" style="background:linear-gradient(135deg,var(--accent),var(--accent-2));border:none;color:#fff" onclick="registrar('${a.id}','${esc(a.nome)}','ativacao')">✓ Registrar</button></div>`:lockedCta(ATIVACAO_NIVEL)}
             </div>`;
           }).join("")}
         </div>
@@ -1311,7 +1315,7 @@ function renderPainel(){
             return `<div class="item ${liberado?"":"locked"}">
               <div class="toprow"><h4>${esc(t.t)}</h4>${isDone(t.id)?`<span class="pill good">Feita</span>`:liberado?`<span class="pill warn">Pendente</span>`:""}</div>
               <div class="meta">${esc(t.d)}</div>
-              ${liberado?`<div class="btnrow"><button class="btn secondary small" onclick="registrar('${t.id}','${esc(t.t)}','rotina')">Registrar</button></div>`:lockedCta(nv)}
+              ${liberado?`<div class="btnrow"><button class="btn small" style="background:linear-gradient(135deg,var(--accent),var(--accent-2));border:none;color:#fff" onclick="registrar('${t.id}','${esc(t.t)}','rotina')">✓ Registrar</button></div>`:lockedCta(nv)}
             </div>`;
           }).join("")}
         </div>
@@ -1325,19 +1329,20 @@ function renderPainel(){
             return `<div class="item ${liberado?"":"locked"}">
               <div class="toprow"><h4>${esc(a.nome)}</h4>${isDone(a.id)?`<span class="pill good">Feita</span>`:liberado?`<span class="pill gold">${esc(a.freq)}</span>`:""}</div>
               <div class="meta">${esc(a.publico)}: ${esc(a.criterio)}</div>
-              ${liberado?`<div class="btnrow"><button class="btn secondary small" onclick="registrar('${a.id}','${esc(a.nome)}','ativacao')">Registrar execução</button></div>`:lockedCta(ATIVACAO_NIVEL)}
+              ${liberado?`<div class="btnrow"><button class="btn small" style="background:linear-gradient(135deg,var(--accent),var(--accent-2));border:none;color:#fff" onclick="registrar('${a.id}','${esc(a.nome)}','ativacao')">✓ Registrar</button></div>`:lockedCta(ATIVACAO_NIVEL)}
             </div>`;
           }).join("")}
         </div>`:`<div class="muted">Sem ativação fixa hoje. Consulte a matriz para ações pontuais e mensais.</div>`}
       </section>
     </div>`;
 
+  const tabs=`<div class="subtabs" style="margin-bottom:20px;border-bottom:2px solid rgba(13,148,136,.08);padding-bottom:16px">
+    ${[["hoje","1️⃣ Rotina de hoje"],["semana","2️⃣ Cronograma"],["matriz","3️⃣ Ativações"],["registros","📋 Registros"]].map(([id,l])=>
+      `<button class="subtab ${subTarefas===id?"on":""}" onclick="subTarefas='${id}';render()" style="font-weight:700">${l}</button>`).join("")}
+  </div>`;
   return `
   ${ring}
-  <div class="subtabs">
-    ${[["hoje","Hoje"],["semana","Semana"],["matriz","Matriz de ativações"],["registros","Registros"]].map(([id,l])=>
-      `<button class="subtab ${subTarefas===id?"on":""}" onclick="subTarefas='${id}';render()">${l}</button>`).join("")}
-  </div>
+  ${tabs}
   ${sub}`;
 }
 function registrar(itemId,titulo,tipo){
