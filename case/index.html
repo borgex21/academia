@@ -289,6 +289,10 @@ mark{background:rgba(45,212,191,.32);color:inherit;border-radius:3px;padding:0 2
   .homegrid{grid-template-columns:1fr}
   .dayring-wrap{justify-content:center;text-align:center}
 }
+
+/* Panel sections with visual hierarchy */
+.panel-section{padding:20px;margin-bottom:14px;background:rgba(255,255,255,.45);border:1px solid rgba(13,148,136,.18);backdrop-filter:blur(20px)}
+.panel-section h2{margin:0 0 14px;font-size:1rem;letter-spacing:-.02em;text-transform:none;color:var(--ink);font-weight:800}
 </style>
 </head>
 <body>
@@ -822,7 +826,7 @@ function load(){
     if(raw) return JSON.parse(raw);
   }catch{}
   return {
-    user:"", view:"aprender",
+    user:"", view:"painel",
     training:{done:{}},
     execucoes:[],           // registros de tarefas/ativações
     vez:{cats:structuredClone(VEZ_DEFAULT_CATS), state:freshVezState(), catAtual:"cab", log:[]}
@@ -854,8 +858,10 @@ function normalizeVez(){
 
 /* ============ NAVEGAÇÃO ============ */
 const VIEWS=[
-  ["aprender","Aprender"],["procedimentos","Procedimentos"],
-  ["painel","Painel"],["vez","Lista da Vez"]
+  ["painel","📋 Painel"],
+  ["aprender","🎓 Aprender"],
+  ["procedimentos","🔍 Procedimentos"],
+  ["vez","📍 Lista da Vez"]
 ];
 let missaoAberta=null;
 let quizEstado=null;
@@ -912,7 +918,7 @@ function renderSpotlightComercial(){
 /* ============ APRENDER (Vídeos + Treinamentos) ============ */
 function renderAprender(){
   if(missaoAberta) return renderMissao();
-  const tabs=[["videos","Vídeos"],["trilha","Trilha"]];
+  const tabs=[["videos","📺 Vídeos"],["trilha","🎓 Trilha de Formação"]];
   const body = subAprender==="trilha" ? renderTrilha() : renderVideos();
   return `
   <div class="subtabs">
@@ -928,7 +934,7 @@ function renderTrilha(){
   let unlocked=true;
   return `
   <section class="card section">
-    <h2>Trilha de formação</h2>
+    <h2>🎓 Trilha de Formação</h2>
     <div class="progressline"><span style="width:${t.pct}%"></span></div>
     <div class="muted" style="font-size:.86rem"><span class="mono">${t.done}/${t.total}</span> missões · complete um nível para liberar o próximo</div>
   </section>
@@ -937,13 +943,17 @@ function renderTrilha(){
     const doneCount=nivel.missoes.filter(m=>DB.training.done[m.id]).length;
     const pct=Math.round(doneCount/nivel.missoes.length*100);
     const thisUnlocked=unlocked;
+    const currentLevel=!unlocked&&i===0?true:thisUnlocked&&doneCount<nivel.missoes.length;
     if(doneCount<nivel.missoes.length) unlocked=false;
-    return `<section class="card level">
+    return `<section class="card level" style="border-left:4px solid ${pct===100?"#10b981":currentLevel?"#3b82f6":"#d1d5db"}">
       <div class="levelhead">
-        <strong>${esc(nivel.nome)}</strong>
-        ${pct===100?`<span class="pill good">Concluído</span>`:thisUnlocked?`<span class="pill gold mono">${pct}%</span>`:`<span class="pill neutral">Bloqueado</span>`}
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="width:32px;height:32px;border-radius:50%;background:${pct===100?"#10b981":currentLevel?"#3b82f6":"#d1d5db"};color:white;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:.9rem">${i+1}</span>
+          <strong>${esc(nivel.nome)}</strong>
+        </div>
+        ${pct===100?`<span class="pill good">✓ Concluído</span>`:thisUnlocked?`<span class="pill gold mono">${pct}%</span>`:`<span class="pill neutral">🔒 Bloqueado</span>`}
       </div>
-      <div class="muted" style="font-size:.86rem;margin-bottom:8px">${esc(nivel.desc)}</div>
+      <div class="muted" style="font-size:.86rem;margin-bottom:8px;margin-left:40px">${esc(nivel.desc)}</div>
       <div class="progressline"><span style="width:${pct}%"></span></div>
       <div class="missions">
         ${nivel.missoes.map((m,j)=>{
@@ -951,7 +961,7 @@ function renderTrilha(){
           return `<button class="mission ${done?"done":""}" ${thisUnlocked?"":"disabled"} onclick="abrirMissao('${m.id}')">
             <span class="mnum">${done?"✓":j+1}</span>
             <span><strong>${esc(m.t)}</strong><small>${esc(m.resumo)}</small></span>
-            <span class="pill ${done?"good":"neutral"}">${done?"OK":"Abrir"}</span>
+            <span class="pill ${done?"good":"neutral"}">${done?"✓ OK":"→ Abrir"}</span>
           </button>`;
         }).join("")}
       </div>
@@ -1068,8 +1078,8 @@ function nivelCompleto(id){
 function nivelNome(id){return TRILHA.find(x=>x.id===id)?.nome.replace(/^Nível \d+ · /,"")||id}
 function lockedCta(nivelId){
   return `<div class="btnrow">
-    <span class="pill neutral">🔒 Libera com ${esc(nivelNome(nivelId))}</span>
-    <button class="btn secondary small" onclick="DB.view='aprender';subAprender='trilha';save();render()">Ir treinar</button>
+    <span class="pill neutral">🔒 Complete ${esc(nivelNome(nivelId))} para liberar</span>
+    <button class="btn secondary small" onclick="DB.view='aprender';subAprender='trilha';save();render()">→ Ir para Aprender</button>
   </div>`;
 }
 function renderPainel(){
@@ -1128,7 +1138,7 @@ function renderPainel(){
             return `<div class="item ${liberado?"":"locked"}">
               <div class="toprow"><h4>${esc(a.nome)}</h4><span class="pill ${a.freq==="Diário"?"good":a.freq==="Semanal"?"warn":"neutral"}">${esc(a.freq)}</span></div>
               <div class="meta"><strong>Público:</strong> ${esc(a.publico)}<br><strong>Dia:</strong> ${esc(a.dia)}<br><strong>Critério:</strong> ${esc(a.criterio)}</div>
-              ${liberado?`<div class="btnrow"><button class="btn secondary small" onclick="registrar('${a.id}','${esc(a.nome)}','ativacao')">Registrar execução</button></div>`:lockedCta(ATIVACAO_NIVEL)}
+              ${liberado?`<div class="btnrow"><button class="btn secondary small" onclick="registrar('${a.id}','${esc(a.nome)}','ativacao')">📝 Registrar execução</button></div>`:lockedCta(ATIVACAO_NIVEL)}
             </div>`;
           }).join("")}
         </div>
@@ -1139,36 +1149,42 @@ function renderPainel(){
         <div class="list">
           ${[...DB.execucoes].sort((a,b)=>b.ts-a.ts).slice(0,80).map(e=>`<div class="item">
             <div class="toprow"><h4>${esc(e.titulo)}</h4>
-              <span class="pill ${e.status==="done"?"good":e.status==="partial"?"warn":"danger"}">${e.status==="done"?"Concluída":e.status==="partial"?"Parcial":"Bloqueada"}</span></div>
+              <span class="pill ${e.status==="done"?"good":e.status==="partial"?"warn":"danger"}">${e.status==="done"?"✓ Concluída":e.status==="partial"?"⚠ Parcial":"🔒 Bloqueada"}</span></div>
             <div class="meta">${esc(e.quando)} · ${esc(e.user||"Equipe")}${e.obs?" · "+esc(e.obs):""}${e.evidencia?"<br>Evidência: "+esc(e.evidencia):""}</div>
           </div>`).join("")||`<div class="muted">Nenhum registro ainda.</div>`}
         </div>
       </section>` :
     `
     <div class="grid2">
-      <section class="card section">
-        <h2>${esc(dia.title)}</h2>
+      <section class="card panel-section">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">
+          <span style="font-size:1.5rem">1️⃣</span>
+          <h2 style="margin:0">Rotina Fixa</h2>
+        </div>
         <div class="list">
           ${dia.tasks.map(t=>{
             const nv=TASK_NIVEL[t.id];
             const liberado=!nv||nivelCompleto(nv);
             return `<div class="item ${liberado?"":"locked"}">
-              <div class="toprow"><h4>${esc(t.t)}</h4>${isDone(t.id)?`<span class="pill good">Feita</span>`:liberado?`<span class="pill warn">Pendente</span>`:""}</div>
+              <div class="toprow"><h4>${esc(t.t)}</h4>${isDone(t.id)?`<span class="pill good">✓ Feita</span>`:liberado?`<span class="pill warn">Pendente</span>`:""}</div>
               <div class="meta">${esc(t.d)}</div>
-              ${liberado?`<div class="btnrow"><button class="btn secondary small" onclick="registrar('${t.id}','${esc(t.t)}','rotina')">Registrar</button></div>`:lockedCta(nv)}
+              ${liberado?`<div class="btnrow"><button class="btn secondary small" onclick="registrar('${t.id}','${esc(t.t)}','rotina')">📝 Registrar</button></div>`:lockedCta(nv)}
             </div>`;
           }).join("")}
         </div>
       </section>
-      <section class="card section">
-        <h2>Ativações de hoje</h2>
+      <section class="card panel-section">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">
+          <span style="font-size:1.5rem">2️⃣</span>
+          <h2 style="margin:0">Ativações</h2>
+        </div>
         ${ats.length?`<div class="list">
           ${ats.map(a=>{
             const liberado=nivelCompleto(ATIVACAO_NIVEL);
             return `<div class="item ${liberado?"":"locked"}">
-              <div class="toprow"><h4>${esc(a.nome)}</h4>${isDone(a.id)?`<span class="pill good">Feita</span>`:liberado?`<span class="pill gold">${esc(a.freq)}</span>`:""}</div>
+              <div class="toprow"><h4>${esc(a.nome)}</h4>${isDone(a.id)?`<span class="pill good">✓ Feita</span>`:liberado?`<span class="pill gold">${esc(a.freq)}</span>`:""}</div>
               <div class="meta">${esc(a.publico)} — ${esc(a.criterio)}</div>
-              ${liberado?`<div class="btnrow"><button class="btn secondary small" onclick="registrar('${a.id}','${esc(a.nome)}','ativacao')">Registrar execução</button></div>`:lockedCta(ATIVACAO_NIVEL)}
+              ${liberado?`<div class="btnrow"><button class="btn secondary small" onclick="registrar('${a.id}','${esc(a.nome)}','ativacao')">📝 Registrar execução</button></div>`:lockedCta(ATIVACAO_NIVEL)}
             </div>`;
           }).join("")}
         </div>`:`<div class="muted">Sem ativação fixa hoje. Consulte a matriz para ações pontuais e mensais.</div>`}
@@ -1178,7 +1194,7 @@ function renderPainel(){
   return `
   ${ring}
   <div class="subtabs">
-    ${[["hoje","Hoje"],["semana","Semana"],["matriz","Matriz de ativações"],["registros","Registros"]].map(([id,l])=>
+    ${[["hoje","📋 Hoje"],["semana","📅 Semana"],["matriz","🎯 Matriz de ativações"],["registros","📊 Registros"]].map(([id,l])=>
       `<button class="subtab ${subTarefas===id?"on":""}" onclick="subTarefas='${id}';render()">${l}</button>`).join("")}
   </div>
   ${sub}`;
