@@ -728,45 +728,274 @@ const CRONOGRAMA = {
 
 /* Trilha de treinamentos — do fundamento ao avançado, ancorada nos POPs */
 const TRILHA = [
-  {id:"n1", nome:"Nível 1 · Fundamentos", desc:"Padrão da casa: postura, imagem e abertura impecável.", missoes:[
-    {id:"m1", t:"Padrão geral de execução", pop:null, resumo:"Educação, objetividade, registro e comunicação imediata de desvios. Nunca improvisar fora do padrão.",
-      steps:["Tratar clientes, equipe e parceiros com educação, objetividade e postura profissional.","Manter apresentação, ambiente, materiais e registros no padrão da empresa.","Registrar informações relevantes no sistema ou controle correspondente.","Comunicar imediatamente atraso, divergência, risco ou erro de agenda.","Em caso de dúvida, acionar a gerência — nunca improvisar."],
-      quiz:{q:"Você percebe um erro na agenda que pode afetar uma cliente daqui a 2 horas. O que fazer?", opts:["Esperar para ver se o problema se resolve sozinho","Comunicar imediatamente a gerência e registrar a situação","Corrigir por conta própria sem avisar ninguém"], correct:1, exp:"Desvios se comunicam imediatamente. A correção pode até ser sua, mas a gerência precisa saber e o registro precisa existir."}},
-    {id:"m2", t:"Apresentação pessoal", pop:"apresentacao", resumo:"Sua imagem é a primeira prova do padrão do salão.",
-      quiz:{q:"Qual das opções está DENTRO do padrão de apresentação?", opts:["Unhas feitas com cores neutras e acessórios discretos","Uniforme com sinais de desgaste, mas limpo","Maquiagem carregada para impressionar"], correct:0, exp:"O padrão pede acabamento profissional e discrição: unhas neutras, acessórios simples, uniforme impecável."}},
-    {id:"m3", t:"Abertura do salão", pop:"abertura", resumo:"Checklist físico + sistemas + agenda + lista da vez do dia anterior.",
-      quiz:{q:"Antes de iniciar novos atendimentos, o que precisa ser validado da véspera?", opts:["Somente o caixa do dia anterior","A lista da vez do dia anterior e suas pendências","Nada — cada dia começa do zero"], correct:1, exp:"A lista da vez da véspera carrega pendências que afetam a justiça do rodízio de hoje."}}]},
-  {id:"n2", nome:"Nível 2 · Agenda e Cadastro", desc:"O coração da operação: agendar certo, cadastrar completo.", missoes:[
-    {id:"m4", t:"Cadastro de cliente", pop:"cadastro", resumo:"Nome, telefone, aniversário, origem. Cadastro incompleto é ativação perdida.",
-      quiz:{q:"Por que registrar a ORIGEM da cliente (indicação, Instagram, tráfego)?", opts:["É exigência fiscal","Alimenta as ativações e mostra qual canal traz cliente","Apenas curiosidade da gerência"], correct:1, exp:"Origem alimenta a Matriz de Ativações (ex: Indica 3) e orienta onde investir."}},
-    {id:"m5", t:"Agendamento", pop:"agendamento", resumo:"Histórico, preferência, disponibilidade, confirmação. Sem preferência → lista da vez.",
-      quiz:{q:"Cliente nova liga e NÃO tem profissional de preferência. Como distribuir?", opts:["Escolher o profissional mais simpático","Dar para quem estiver por perto na hora","Usar a lista da vez de forma discreta, justa e registrada"], correct:2, exp:"É exatamente o que o POP define: lista da vez, discreta, justa e registrada."}},
-    {id:"m6", t:"Telefone e WhatsApp", pop:"telefone", resumo:"Saudação padrão, entender antes de ofertar, sequência de conversão D0–D7.",
-      quiz:{q:"Uma conversa de WhatsApp ficou sem resposta da cliente há 3 dias. O que o padrão manda?", opts:["Aguardar a cliente responder quando quiser","Retomar conforme a régua D0, D1, D3, D5 e D7","Apagar a conversa para limpar a caixa"], correct:1, exp:"A régua de sequência de conversão D0–D7 existe para nenhuma conversa morrer em aberto."}}]},
-  {id:"n3", nome:"Nível 3 · Experiência da Cliente", desc:"Do primeiro sorriso à espera bem gerida.", missoes:[
-    {id:"m7", t:"Primeiro contato no salão", pop:"primeirocontato", resumo:"Sorriso, nome, água/café/Wi-Fi, acompanhamento até o profissional.",
-      quiz:{q:"A cliente chegou e o profissional ainda está finalizando outro atendimento. O que fazer?", opts:["Deixar aguardando em pé até o profissional aparecer","Acomodar, oferecer água/café/Wi-Fi e zelar por ela na espera","Pedir que volte em 30 minutos"], correct:1, exp:"Zelar pela cliente entre atendimentos é parte do POP de primeiro contato."}},
-    {id:"m8", t:"Cliente em espera", pop:"espera", resumo:"Transparência + tempo estimado + cronometrar + reposicionar antes do limite.",
-      quiz:{q:"Você informou 15 minutos de espera. Aos 12 minutos o atraso vai aumentar. Qual a ação correta?", opts:["Esperar a cliente reclamar para explicar","Explicar de novo, pedir desculpas e oferecer alternativa ANTES do limite","Fingir que não percebeu o atraso"], correct:1, exp:"O POP manda cronometrar e reposicionar a cliente antes do limite combinado."}},
-    {id:"m9", t:"Lista da vez", pop:"listadavez", resumo:"Ordem fixa, marcador gira, ausente anula posição, tudo registrado.",
-      quiz:{q:"O profissional da vez não pode atender o encaixe. O que fazer?", opts:["Cancelar o encaixe","Registrar a situação e passar para o próximo conforme regra","Escolher qualquer um que esteja livre, sem registrar"], correct:1, exp:"Registrar e seguir a regra mantém o rodízio justo e auditável."}}]},
-  {id:"n4", nome:"Nível 4 · Comercial e Fechamento", desc:"Revenda, cobrança e caixa sem fricção.", missoes:[
-    {id:"m10", t:"Revenda de produtos", pop:"revenda", resumo:"Indicação do profissional primeiro; sem indicação, necessidade antes de sugestão.",
-      quiz:{q:"Qual o primeiro passo na revenda?", opts:["Mostrar o produto mais caro da vitrine","Perguntar se algum produto foi indicado pelo profissional","Dar desconto para fechar rápido"], correct:1, exp:"A indicação do profissional tem prioridade — ela conecta o produto à necessidade real."}},
-    {id:"m11", t:"Cobrança e fechamento", pop:"cobranca", resumo:"Confirmar serviços, perguntar se ficou feliz ANTES de cobrar, nunca sair sem pagamento validado.",
-      quiz:{q:"A cliente demonstra insatisfação na hora de pagar. O que o padrão exige?", opts:["Concluir a cobrança rápido para não criar constrangimento","Não concluir a cobrança sem acionar a gerência","Dar desconto por conta própria"], correct:1, exp:"Insatisfação trava a cobrança até a gerência entrar — é a última chance de salvar a experiência."}},
-    {id:"m12", t:"Fechamento de caixa", pop:"caixa", resumo:"Conferir formas de pagamento, comparar comprovantes × sistema, reportar divergências.",
-      quiz:{q:"Os comprovantes físicos não batem com o sistema. Qual a atitude correta?", opts:["Ajustar o sistema para bater e seguir em frente","Comunicar imediatamente a divergência para a gerência","Deixar para conferir amanhã"], correct:1, exp:"Divergência de caixa é comunicação imediata — nunca ajuste silencioso."}}]},
-  {id:"n5", nome:"Nível 5 · Relacionamento Avançado", desc:"A máquina de ativação: sequência de conversão, funil e recuperação de agenda.", missoes:[
-    {id:"m13", t:"Sequência de Conversão D0–D7 e funil", pop:"followup", resumo:"Régua de contato + classificação por etapa do funil + registro de cada tentativa.",
-      quiz:{q:"Um cliente recebeu oferta e sumiu. Em qual etapa do funil ele está e o que fazer?", opts:["Perdida — descartar o contato","Em objeção/oferta enviada — seguir a régua D0–D7 registrando cada tentativa","Agendada — esperar ela aparecer"], correct:1, exp:"Oferta enviada sem resposta entra na régua de retomada, com registro de tentativa, canal e próxima ação."}},
-    {id:"m14", t:"Ativações de relacionamento e retorno", pop:null, resumo:"As 13 ativações reais: 5 lembretes semanais por serviço, faltantes, 6 meses sem voltar, pós-atendimento, Clube VIP, Indica 3, inativas, aniversariantes.",
-      steps:["Toda terça: reflexo (+30d), coloração (+30d), unha em gel (+20d), corte masculino (+20d), podologia (+30d).","Toda quinta: canceladas e faltantes da semana anterior.","Todo sábado: pós-atendimento de novas, com pedido de avaliação no Google.","Todo dia: pós-atendimento — cliente atendida ontem.","Mensal: 6 meses sem voltar (pesquisa de satisfação), inativas de alto valor, aniversariantes.","Quinzenal: Clube VIP 30 dias. Pontual: Indica 3."],
-      quiz:{q:"Hoje é quinta-feira. Qual ativação da matriz é prioridade do dia?", opts:["Aniversariantes do próximo mês","Canceladas e faltantes da semana anterior","Os cinco lembretes por serviço"], correct:1, exp:"Quinta é o dia recomendado de canceladas/faltantes — recuperar agenda perdida com velocidade."}},
-    {id:"m15", t:"Reporte semanal", pop:null, resumo:"Fechar a semana com números: ativações, respostas, agendamentos e perdas por indisponibilidade.",
-      steps:["Consolidar ativações realizadas na semana por tipo de ação.","Contar respostas e agendamentos gerados.","Registrar perdas por falta de horário ou profissional, com motivo.","Reportar à gerência no fechamento de sexta."],
-      quiz:{q:"Uma cliente quis agendar mas não havia horário. Isso entra no reporte?", opts:["Não — se não agendou, não conta","Sim — perda por indisponibilidade, com motivo registrado para análise","Só se ela reclamar formalmente"], correct:1, exp:"Perda por indisponibilidade é dado de gestão: mostra demanda reprimida e orienta a agenda."}}]}
+
+/* ────────────────────────────── NÍVEL 1 ────────────────────────────── */
+{id:"n1", nome:"Nível 1 · Fundamentos do Padrão", desc:"O que separa um ambiente profissional de um lugar qualquer: postura, imagem e abertura sem margem para imprevisto.", missoes:[
+
+  {id:"m1", t:"Padrão geral de execução", pop:null,
+   video:{titulo:"O que é padrão de execução e por que ele existe", dur:"~9 min", desc:"Conceito, exemplos práticos e consequências de desvio.", url:null},
+   resumo:"Educação, objetividade, registro e comunicação imediata de desvios. Nunca improvisar fora do padrão.",
+   steps:[
+     "Tratar clientes, equipe e parceiros com educação, objetividade e postura profissional.",
+     "Manter apresentação, ambiente, materiais e registros no padrão da empresa.",
+     "Registrar informações relevantes no sistema ou controle correspondente.",
+     "Comunicar imediatamente atraso, divergência, risco ou erro de agenda.",
+     "Em caso de dúvida, acionar a gerência — nunca improvisar."
+   ],
+   quiz:{
+     q:"Você está na recepção e percebe que o pedido de uma cliente foi anotado errado: ela agendou reflexo, mas o profissional foi informado de hidratação. O atendimento começa em 12 minutos e o profissional acabou de sair para intervalo. O que o padrão exige?",
+     opts:[
+       "Corrigir silenciosamente no sistema e não comentar para não gerar preocupação desnecessária",
+       "Esperar o profissional voltar do intervalo para não interromper o descanso dele",
+       "Acionar a gerência agora, registrar a divergência e garantir que o profissional saiba antes de iniciar"
+     ],
+     correct:2,
+     exp:"Divergências de agenda têm impacto direto no atendimento e no tempo do profissional. O padrão é: comunicar imediatamente, registrar e garantir que quem precisa saber, saiba — antes de o dano acontecer."
+   }},
+
+  {id:"m2", t:"Apresentação pessoal", pop:"apresentacao",
+   video:{titulo:"Apresentação pessoal: o que o cliente lê antes de você falar", dur:"~8 min", desc:"Uniforme, acabamento, postura e o que cada detalhe comunica.", url:null},
+   resumo:"Sua imagem é a primeira prova do padrão do salão.",
+   quiz:{
+     q:"Segunda-feira. Você chegou com o uniforme levemente amassado porque a semana começou corrida. Uma cliente regular comenta ao entrar: 'Nossa, parece que hoje foi difícil chegar.' Essa situação revela que:",
+     opts:[
+       "Clientes regulares são mais exigentes e precisam de atenção especial no início da semana",
+       "A apresentação pessoal é percebida antes de qualquer palavra e afeta diretamente a percepção do padrão",
+       "O início de semana justifica flexibilidade no padrão, já que o movimento costuma ser menor"
+     ],
+     correct:1,
+     exp:"O padrão não tem exceção por dia da semana. A cliente leu o uniforme amassado como sinal do ambiente antes de você abrir a boca. Apresentação pessoal é a primeira comunicação do salão."
+   }},
+
+  {id:"m3", t:"Abertura do salão", pop:"abertura",
+   video:{titulo:"Abertura: o que precisa estar pronto antes do primeiro cliente chegar", dur:"~11 min", desc:"Checklist físico, sistemas, agenda e lista da vez.", url:null},
+   resumo:"Checklist físico + sistemas + agenda + validação da lista da vez do dia anterior.",
+   quiz:{
+     q:"Você é o primeiro a chegar e percebe que a lista da vez do dia anterior ficou com uma pendência: um profissional foi pulado por ausência mas nunca foi reposicionado. Faltam 18 minutos para abrir. O que fazer primeiro?",
+     opts:[
+       "Abrir o salão no horário e resolver a pendência da lista durante o expediente quando houver pausa",
+       "Resolver a pendência da lista da vez antes de abrir — mesmo que atrase 5 minutos",
+       "Deixar como está: a pendência é do dia anterior e não afeta o dia de hoje"
+     ],
+     correct:1,
+     exp:"A lista da vez da véspera carrega pendências que afetam diretamente a justiça do rodízio de hoje. Resolver antes de abrir é parte do checklist de abertura — não é opcional."
+   }}
+]},
+
+/* ────────────────────────────── NÍVEL 2 ────────────────────────────── */
+{id:"n2", nome:"Nível 2 · Agenda e Cadastro", desc:"O coração da operação. Agendar com precisão e cadastrar completo não é burocracia — é ativação futura.", missoes:[
+
+  {id:"m4", t:"Cadastro de cliente", pop:"cadastro",
+   video:{titulo:"Por que um cadastro incompleto custa dinheiro", dur:"~10 min", desc:"Campos obrigatórios, origem e o impacto na Matriz de Ativação.", url:null},
+   resumo:"Nome, telefone, aniversário, origem. Cadastro incompleto é ativação perdida.",
+   quiz:{
+     q:"Uma cliente nova fica reticente quando você pede o número de telefone: 'Prefiro não dar, não gosto de receber mensagens.' Você precisa do dado para o sistema. Como interpretar essa situação e agir?",
+     opts:[
+       "Cadastrar sem o telefone para não criar atrito — o nome já é suficiente para o registro",
+       "Explicar brevemente para que o número é usado (confirmação de agenda e contato direto), respeitar a resposta e registrar a observação no sistema",
+       "Insistir com gentileza — o telefone é obrigatório e a cliente precisa entender a importância"
+     ],
+     correct:1,
+     exp:"Forçar gera atrito e não fideliza. Explicar o uso real (não marketing genérico) aumenta a aceitação. Se recusar mesmo assim, registra a restrição — assim a equipe sabe que essa cliente não quer contato ativo."
+   }},
+
+  {id:"m5", t:"Agendamento", pop:"agendamento",
+   video:{titulo:"Agendamento: decisões que parecem simples e não são", dur:"~12 min", desc:"Histórico, preferência, conflitos de agenda e lista da vez.", url:null},
+   resumo:"Histórico, preferência, disponibilidade, confirmação. Sem preferência → lista da vez.",
+   quiz:{
+     q:"Três clientes ligam no mesmo horário querendo agendar com a mesma profissional — que já está com a agenda cheia naquele dia. Uma delas é cliente frequente. As outras são novas. Como conduzir?",
+     opts:[
+       "Priorizar a cliente frequente e oferecer horários alternativos às novas — fidelidade tem peso",
+       "Oferecer o próximo horário disponível com aquela profissional para todas as três, sem distinção de frequência",
+       "Para as novas, apresentar outro profissional disponível. Para a frequente, verificar encaixe ou lista de espera conforme o POP"
+     ],
+     correct:2,
+     exp:"Clientes novas sem preferência definida vão para a lista da vez ou para profissional disponível. Clientes com histórico têm o histórico verificado — mas ninguém passa na frente de uma agenda já fechada. O POP define o fluxo; a relação não é critério de agendamento."
+   }},
+
+  {id:"m6", t:"Telefone e WhatsApp", pop:"telefone",
+   video:{titulo:"Conversas que convertem: padrão de abordagem e sequência D0–D7", dur:"~14 min", desc:"Saudação, diagnóstico antes da oferta e régua de acompanhamento.", url:null},
+   resumo:"Saudação padrão, entender antes de ofertar, sequência de conversão D0–D7.",
+   quiz:{
+     q:"Uma conversa de WhatsApp com uma cliente em potencial chegou ao D3. Ela viu sua mensagem mas não respondeu. Você já confirmou disponibilidade e enviou uma foto do trabalho. O que o padrão manda agora?",
+     opts:[
+       "Aguardar mais alguns dias — ela vai responder quando estiver pronta e pressão pode afastar",
+       "Enviar uma nova mensagem no D5 com abordagem diferente: não repita o que já foi dito, adicione valor ou faça uma pergunta simples",
+       "Encerrar a conversa e arquivar — três dias sem resposta indica desinteresse"
+     ],
+     correct:1,
+     exp:"A régua D0–D7 existe exatamente para esses casos. No D5 você tenta de ângulo diferente — não repete, não insiste no mesmo ponto. Encerrar no D3 deixa dinheiro na mesa. Aguardar indefinidamente também."
+   }}
+]},
+
+/* ────────────────────────────── NÍVEL 3 ────────────────────────────── */
+{id:"n3", nome:"Nível 3 · Experiência da Cliente", desc:"Da chegada à espera: cada minuto que a cliente passa no salão é uma oportunidade de confirmar ou destruir a percepção do serviço.", missoes:[
+
+  {id:"m7", t:"Primeiro contato no salão", pop:"primeirocontato",
+   video:{titulo:"Primeiros 30 segundos: o que eles decidem", dur:"~9 min", desc:"Saudação, nome, acomodação e o que fazer quando o profissional não está disponível.", url:null},
+   resumo:"Sorriso, nome, água/café/Wi-Fi, acompanhamento até o profissional.",
+   quiz:{
+     q:"Uma cliente entra visivelmente apressada, olha para o relógio e diz: 'Vim fazer as unhas, não tenho muito tempo.' O profissional está disponível imediatamente. Como conduzir esse primeiro contato?",
+     opts:[
+       "Encaminhar direto para o profissional sem perguntas — ela deixou claro que está com pressa",
+       "Saudar pelo nome, confirmar o serviço e o tempo estimado, e encaminhar com clareza — sem reter com perguntas desnecessárias",
+       "Seguir o POP completo de boas-vindas, incluindo oferta de café e apresentação do Wi-Fi, mesmo que ela esteja com pressa"
+     ],
+     correct:1,
+     exp:"O POP de primeiro contato é adaptável ao contexto da cliente. Pressa declarada significa: confirme o essencial, transmita controle e encaminhe com agilidade. Café e Wi-Fi são ofertas, não obrigações — ler o momento faz parte do padrão."
+   }},
+
+  {id:"m8", t:"Cliente em espera", pop:"espera",
+   video:{titulo:"Espera gerida versus espera ignorada: o que muda na percepção", dur:"~11 min", desc:"Transparência, cronometragem e reposicionamento antes do limite.", url:null},
+   resumo:"Transparência + tempo estimado + cronometrar + reposicionar antes do limite.",
+   quiz:{
+     q:"Você informou 15 minutos de espera para uma cliente. Aos 10 minutos, percebe que o atendimento anterior do profissional vai atrasar mais 20 minutos. A cliente está sentada, olhando para o lado. O que o padrão exige?",
+     opts:[
+       "Esperar a cliente perguntar sobre o tempo — interromper pode destacar o atraso desnecessariamente",
+       "Ir até a cliente agora: reconhecer o atraso, dar o novo tempo estimado, pedir desculpas e oferecer algo enquanto aguarda",
+       "Avisar somente quando o profissional estiver realmente disponível para não gerar expectativa errada duas vezes"
+     ],
+     correct:1,
+     exp:"O POP é claro: reposicionar antes do limite, não depois. A cliente que descobre o atraso sozinha perde confiança. A que é informada com antecedência, gentileza e uma oferta concreta mantém a percepção de controle do ambiente."
+   }},
+
+  {id:"m9", t:"Módulo de Distribuição", pop:"listadavez",
+   video:{titulo:"Como o Módulo de Distribuição funciona e por que ele protege todo mundo", dur:"~10 min", desc:"Ordem fixa, registro, ausência e imparcialidade como valor.", url:null},
+   resumo:"Ordem fixa, marcador gira, ausente anula posição, tudo registrado.",
+   quiz:{
+     q:"Um cliente sem preferência entra para encaixe. O profissional da vez está atendendo, mas termina em 8 minutos. Outro profissional está disponível agora e oferece prontamente para pegar o atendimento. Como agir?",
+     opts:[
+       "Passar para o profissional disponível — cliente esperando é pior do que fugir da ordem",
+       "Explicar ao cliente que há 8 minutos de espera e seguir a ordem do Módulo de Distribuição, registrando a situação",
+       "Perguntar ao cliente qual prefere: esperar ou atender com quem está disponível agora"
+     ],
+     correct:1,
+     exp:"O Módulo de Distribuição é imparcial por design — protege a equipe de acusações de favoritismo e garante que ninguém perde rodada por outro profissional ser mais ágil em se oferecer. 8 minutos de espera explicada é melhor do que quebrar a regra."
+   }}
+]},
+
+/* ────────────────────────────── NÍVEL 4 ────────────────────────────── */
+{id:"n4", nome:"Nível 4 · Comercial e Fechamento", desc:"Revenda, cobrança e caixa. Onde o atendimento se transforma em receita — sem fricção, sem improvisação.", missoes:[
+
+  {id:"m10", t:"Revenda de produtos", pop:"revenda",
+   video:{titulo:"Revenda sem pressão: como a indicação do profissional muda tudo", dur:"~10 min", desc:"Diagnóstico antes da oferta, sequência e o papel da recepção.", url:null},
+   resumo:"Indicação do profissional primeiro; sem indicação, necessidade antes de sugestão.",
+   quiz:{
+     q:"Uma cliente sai da cadeira após coloração e você percebe que ela está olhando os produtos na vitrine. O profissional não fez nenhuma indicação. Ela comenta: 'Meu cabelo sempre resseca depois da cor.' Como agir?",
+     opts:[
+       "Mostrar os produtos de maior valor da linha de tratamento — ela demonstrou interesse e está aberta à compra",
+       "Perguntar o que o profissional indicou e, se não indicou nada, fazer a ponte: 'Você pode confirmar com ela antes de sair — ela conhece seu cabelo'",
+       "Sugerir um produto de hidratação popular sem mencionar o profissional — isso agiliza o fechamento"
+     ],
+     correct:1,
+     exp:"A indicação do profissional tem autoridade técnica que a recepção não tem. Fazer a ponte — e quando possível confirmar com o profissional — aumenta a conversão e a confiança da cliente no produto. Sugerir sem base técnica é venda de curto prazo."
+   }},
+
+  {id:"m11", t:"Cobrança e fechamento", pop:"cobranca",
+   video:{titulo:"Fechar sem constrangimento: o caixa como parte da experiência", dur:"~9 min", desc:"Confirmação de serviços, satisfação antes da cobrança e validação de pagamento.", url:null},
+   resumo:"Confirmar serviços, perguntar se ficou feliz ANTES de cobrar, nunca sair sem pagamento validado.",
+   quiz:{
+     q:"Ao apresentar o valor, a cliente franze a testa e diz: 'Parece mais caro do que eu lembrava.' O valor está correto. O que o padrão exige nesse momento?",
+     opts:[
+       "Confirmar o valor com firmeza e encaminhar para pagamento — o preço é o preço",
+       "Oferecer um desconto pontual para evitar o conflito e preservar a relação com a cliente",
+       "Apresentar o detalhamento dos serviços realizados com calma, confirmar que foi o combinado e perguntar se ficou alguma dúvida antes de prosseguir"
+     ],
+     correct:2,
+     exp:"Desconto sem critério desvaloriza o serviço e cria expectativa futura. Firmeza sem explicação gera atrito. O POP é: detalhar, confirmar e dar espaço para a cliente processar — na maioria dos casos, o mal-entendido se resolve com clareza."
+   }},
+
+  {id:"m12", t:"Indicadores-chave da operação", pop:null,
+   video:{titulo:"Indicadores-chave: o que medir e por que cada número importa", dur:"~13 min", desc:"Taxa de retorno, ticket médio, ocupação e reativação.", url:null},
+   resumo:"Os números que revelam a saúde real da operação — além do movimento do dia.",
+   steps:[
+     "Taxa de retorno: percentual de clientes que voltam em até 60 dias após o serviço.",
+     "Ticket médio: valor médio por atendimento — comparar entre profissionais e períodos.",
+     "Taxa de ocupação: percentual da agenda preenchida versus capacidade total disponível.",
+     "Reativação: clientes inativas há mais de 90 dias que voltaram por ação da operação.",
+     "Esses quatro Indicadores-chave compõem o painel mínimo de gestão de qualquer operação de beleza."
+   ],
+   quiz:{
+     q:"A taxa de retorno do salão caiu de 68% para 51% nos últimos dois meses. O movimento diário parece o mesmo. Como interpretar esse dado antes de tomar qualquer decisão?",
+     opts:[
+       "A queda pode ser sazonal — esperar mais um mês para confirmar tendência antes de agir",
+       "A operação está atraindo clientes novos suficientes para compensar as que não voltam, então o indicador é menos relevante",
+       "Retorno caindo com movimento estável indica aumento de clientes novas mascarando perda de base — sinal de alerta que exige diagnóstico, não espera"
+     ],
+     correct:2,
+     exp:"Movimento estável com retorno caindo é um dos sinais mais traiçoeiros da operação: você está enchendo com novas enquanto perde as que já conquistou. Sem agir na causa, a base encolhe progressivamente. Esse é exatamente o tipo de leitura que os Indicadores-chave foram feitos para revelar."
+   }}
+]},
+
+/* ────────────────────────────── NÍVEL 5 ────────────────────────────── */
+{id:"n5", nome:"Nível 5 · Modelo de Trabalho", desc:"Como a consultoria se estrutura, como a contratação funciona e por que o método é o mesmo independente do formato escolhido.", missoes:[
+
+  {id:"m13", t:"Dois formatos de contratação", pop:null,
+   video:{titulo:"Projeto versus Mensalidade: como apresentar cada formato", dur:"~12 min", desc:"Quando indicar cada modelo, o que muda e o que permanece igual.", url:null},
+   resumo:"O trabalho tem dois formatos de contratação. O método é o mesmo nos dois. O que muda é a duração e a forma de faturamento.",
+   steps:[
+     "Formato Projeto (valor fechado): inicia com diagnóstico, define objetivos claros, executa com supervisão, entrega documentada e encerramento formal. Valor único acordado antes do início.",
+     "Formato Mensalidade: também inicia com diagnóstico, define estratégia, executa em ciclos mensais com acompanhamento recorrente e otimizações periódicas. Pagamento mensal durante a vigência.",
+     "O método ProPositiva é o mesmo nos dois formatos: diagnóstico, planejamento, execução supervisionada e entrega com documentação.",
+     "O que muda entre os formatos é a duração do engajamento e a forma de faturamento — não a qualidade nem a profundidade do trabalho.",
+     "O formato Projeto é indicado quando há um problema específico com ponto de chegada definido. A Mensalidade é indicada quando a operação precisa de presença e gestão contínua."
+   ],
+   quiz:{
+     q:"Uma operação contrata no formato Projeto para reestruturar o processo de agendamento. No meio da execução, o gestor pergunta: 'Podemos incluir o treinamento da equipe também?' Como isso deve ser tratado?",
+     opts:[
+       "Incluir sem discussão — faz parte do trabalho e criar atrito por isso é desnecessário",
+       "Avaliar se está dentro do escopo contratado: se não estiver, apresentar como adição com impacto no valor ou prazo do projeto",
+       "Recusar — treinamento é serviço separado e não pode ser misturado com o projeto em andamento"
+     ],
+     correct:1,
+     exp:"No formato Projeto, o escopo é definido e acordado antes do início. Inclusões são bem-vindas — mas precisam ser tratadas com transparência sobre impacto no valor ou prazo. Isso protege a relação e mantém a clareza do que foi contratado."
+   }},
+
+  {id:"m14", t:"O diagnóstico como ponto de partida", pop:null,
+   video:{titulo:"Por que todo trabalho começa com diagnóstico — independente do formato", dur:"~10 min", desc:"O que o diagnóstico revela, como ele é conduzido e o que entrega.", url:null},
+   resumo:"Nos dois formatos, o diagnóstico é obrigatório. Ele define o ponto de partida real e orienta tudo que vem depois.",
+   steps:[
+     "O diagnóstico mapeia: indicadores atuais, processos existentes, lacunas operacionais e oportunidades imediatas.",
+     "Sem diagnóstico, o plano de ação é baseado em suposição — não em evidência.",
+     "No formato Projeto, o diagnóstico define o escopo. No formato Mensalidade, define a estratégia do primeiro ciclo.",
+     "O diagnóstico é entregue em documento estruturado, com achados, prioridades e recomendações.",
+     "A operação recebe o diagnóstico independente de avançar ou não para a próxima etapa."
+   ],
+   quiz:{
+     q:"Um gestor diz: 'Já sei o que precisa melhorar no meu salão. Posso pular o diagnóstico e ir direto para a execução?' Como interpretar esse pedido?",
+     opts:[
+       "Aceitar — o gestor conhece a própria operação e economizar tempo no início acelera os resultados",
+       "Propor um diagnóstico rápido de validação: mesmo que o gestor conheça os sintomas, o diagnóstico estruturado frequentemente revela causas diferentes das percebidas",
+       "Recusar categoricamente — sem diagnóstico não há contrato"
+     ],
+     correct:1,
+     exp:"Gestores conhecem os sintomas. O diagnóstico identifica as causas. São coisas diferentes. Um salão que 'precisa vender mais' pode ter o problema na taxa de retorno, na ocupação, no ticket ou na reativação — cada um com solução distinta. Pular o diagnóstico é tratar sintoma sem entender a doença."
+   }},
+
+  {id:"m15", t:"O método permanece. O formato muda.", pop:null,
+   video:{titulo:"ProPositiva: o método que sustenta os dois formatos", dur:"~11 min", desc:"Diagnóstico, planejamento, execução, entrega. Como isso se aplica no Projeto e na Mensalidade.", url:null},
+   resumo:"O método ProPositiva é o mesmo em qualquer formato de contratação. O rigor, a documentação e a supervisão não dependem de quanto tempo dura o engajamento.",
+   steps:[
+     "Diagnóstico: levantamento estruturado da operação em qualquer formato.",
+     "Planejamento: definição de objetivos, prioridades, responsáveis e prazos.",
+     "Execução supervisionada: acompanhamento próximo com registro de andamento.",
+     "Entrega documentada: o que foi feito, o que mudou, o que ficou pendente.",
+     "No formato Projeto, o ciclo acontece uma vez e encerra. Na Mensalidade, o ciclo se repete mensalmente com otimizações progressivas."
+   ],
+   quiz:{
+     q:"Um cliente em Mensalidade pergunta: 'Se eu migrar para Projeto no futuro, o trabalho vai ser menos aprofundado?' Como responder com precisão?",
+     opts:[
+       "Sim — a Mensalidade permite mais profundidade por ser contínua",
+       "Não — o método é o mesmo nos dois formatos. O Projeto tem escopo definido e entrega pontual; a Mensalidade tem ciclos contínuos. Profundidade não é uma questão de formato, mas de escopo acordado",
+       "Depende do tamanho da operação e do volume de trabalho necessário"
+     ],
+     correct:1,
+     exp:"A diferença entre Projeto e Mensalidade é estrutural, não qualitativa. O método ProPositiva — diagnóstico, planejamento, execução, entrega — é aplicado com o mesmo rigor nos dois. O que muda é a duração e a forma de faturamento. Isso precisa ser comunicado com clareza."
+   }}
+]}
+
 ];
+
 
 /* Lista da vez — categorias e regras do Motor de Distribuição */
 const VEZ_DEFAULT_CATS = [
@@ -997,7 +1226,7 @@ function renderMissao(){
   const isCorrect=quizEstado!==null&&shuffled[quizEstado]===m.quiz.correct;
 
   /* rótulo do botão de avanço */
-  const advanceLbl=pos.isLast?'Concluir treinamento ✓':pos.isLastInLevel?'Concluir nível e continuar →':'Continuar →';
+  const advanceLbl=pos.isLast?'Concluir treinamento ✓':pos.isLastInLevel?'Ir para a próxima página →':'Ir para a próxima página →';
 
   return `<div class="missionview">
 
@@ -1071,7 +1300,7 @@ function renderMissao(){
         ${done
           ?`<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
               <span class="pill good">Missão concluída</span>
-              ${nextId?`<button class="btn" onclick="abrirMissao('${nextId}')">Próxima →</button>`:''}
+              ${nextId?`<button class="btn" onclick="abrirMissao('${nextId}')">Ir para a próxima página →</button>`:''}
             </div>`
           :''}
       </div>
